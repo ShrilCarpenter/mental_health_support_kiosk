@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Sanctuary - BVM Engineering College Student Mental Health Support Kiosk</title>
+  <meta name="description" content="Birla Vishvakarma Mahavidyalaya (BVM) Engineering College - Confidential, anonymous campus kiosk for engineering students to check well-being, access self-help tools, and connect with the BVM Counseling Cell.">
+  <meta name="theme-color" content="#1e5b74">
+
+  <!-- Google Fonts: Manrope (Headlines) & Inter (Body/Controls) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- BVM Campus Background Image Layer -->
+  <div class="kiosk-bg-layer" id="bgLayer" aria-hidden="true"></div>
+  <div class="ambient-glow ambient-glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow ambient-glow-2" aria-hidden="true"></div>
+
+  <!-- Kiosk App Wrapper -->
+  <div class="kiosk-app" id="kioskApp">
+
+    <!-- ====================================================================
+         PERSISTENT INSTITUTIONAL HEADER
+         ==================================================================== -->
+    <header class="kiosk-header" role="banner">
+      <!-- Left: BVM Crest & Title -->
+      <div class="header-left">
+        <div class="institution-brand" id="brandHomeTrigger" role="button" tabindex="0" title="Return to Sanctuary Start">
+          <div class="institution-crest" aria-hidden="true">
+            <span class="material-symbols-outlined" style="font-size: 26px;">school</span>
+          </div>
+          <div class="institution-details">
+            <span class="institution-title">Campus Sanctuary</span>
+            <span class="institution-sub">BVM Engineering College • Student Well-Being Cell</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Confidentiality Pill & Navigation Track -->
+      <div class="header-center">
+        <div class="confidential-pill">
+          <span class="material-symbols-outlined">verified_user</span>
+          <span>100% Private &amp; Confidential • No Records Stored</span>
+        </div>
+
+        <nav class="header-nav" aria-label="Kiosk Fast Navigation">
+          <button type="button" class="nav-pill-btn active" data-target="screenWelcome" id="navBtnStart">Start</button>
+          <button type="button" class="nav-pill-btn" data-target="screenMoodCheck" id="navBtnCheckIn">Check-In</button>
+          <button type="button" class="nav-pill-btn" data-target="screenSelfHelp" id="navBtnTools">Coping Tools</button>
+          <button type="button" class="nav-pill-btn" data-target="screenCounseling" id="navBtnCounseling">Counseling</button>
+        </nav>
+      </div>
+
+      <!-- Right: Clock, Accessibility, Audio, Quick Exit -->
+      <div class="header-right">
+        <div class="clock-display" id="kioskClock" title="Current Campus Time">
+          <span class="material-symbols-outlined" style="font-size: 16px;">schedule</span>
+          <span id="clockTimeText">--:--</span>
+        </div>
+
+        <button type="button" class="btn-icon-control" id="btnToggleSound" title="Toggle audio feedback and calming sounds" aria-label="Toggle Sound">
+          <span class="material-symbols-outlined" id="soundIcon">volume_up</span>
+        </button>
+
+        <button type="button" class="btn-icon-control" id="btnHeaderAccessibility" title="Adjust text size and contrast" aria-label="Accessibility Options">
+          <span class="material-symbols-outlined">text_fields</span>
+        </button>
+
+        <button type="button" class="btn-quick-exit-top" id="btnQuickExitTop" title="Immediately clear screen and wipe session" aria-label="Quick Exit / Privacy Wipe">
+          <span class="material-symbols-outlined" style="font-size: 18px;">restart_alt</span>
+          <span>Quick Exit</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         MAIN VIEWPORT: 6 INTEGRATED KIOSK SCREENS
+         ==================================================================== -->
+    <main class="kiosk-main" id="mainContent" role="main">
+
+      <!-- ================================================================
+           SCREEN 1: WELCOME & SANCTUARY (Screen 1 Mockup)
+           ================================================================ -->
+      <section class="screen-container active" id="screenWelcome" aria-labelledby="welcomeHeading">
+        <div class="welcome-grid">
+          
+          <!-- Left Column (7 cols): Direct Action -->
+          <div class="welcome-left-col">
+            <div>
+              <div class="pill-badge">
+                <span class="material-symbols-outlined">shield</span>
+                <span>PRIVATE • NO LOGIN</span>
+              </div>
+
+              <h1 class="welcome-heading" id="welcomeHeading">A calmer place to check in.</h1>
+
+              <p class="welcome-lead">
+                Take a moment to understand how you're feeling and discover simple support options — privately and at your own pace.
+              </p>
+
+              <!-- CTA Buttons Group -->
+              <div class="welcome-cta-group">
+                <!-- Primary Action -->
+                <button type="button" class="btn-primary-action" id="btnWelcomeStart">
+                  <div class="btn-label-wrap">
+                    <span class="material-symbols-outlined">favorite</span>
+                    <span>Start Check-In</span>
+                  </div>
+                  <div class="btn-duration-badge">
+                    <span>2–3 min</span>
+                    <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+                  </div>
+                </button>
+
+                <!-- Secondary Actions -->
+                <div class="welcome-secondary-row">
+                  <button type="button" class="btn-secondary-action" id="btnWelcomeSelfHelp">
+                    <span class="material-symbols-outlined" style="color: var(--secondary);">spa</span>
+                    <span>Explore Self-Help</span>
+                  </button>
+
+                  <button type="button" class="btn-secondary-action" id="btnWelcomeCounseling">
+                    <span class="material-symbols-outlined" style="color: var(--primary);">support_agent</span>
+                    <span>Counseling Support</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Privacy Reassurance -->
+              <div class="privacy-notice-row">
+                <span class="material-symbols-outlined">lock</span>
+                <span>Your responses are private and used only to guide your support options.</span>
+              </div>
+            </div>
+
+            <!-- Quick Interactive Breath Pacer Bar -->
+            <div class="quick-breath-bar" id="quickBreathBar">
+              <div class="quick-breath-left">
+                <div class="quick-breath-icon">
+                  <span class="material-symbols-outlined">air</span>
+                </div>
+                <div>
+                  <div class="quick-breath-title">Need a moment to breathe?</div>
+                  <div class="quick-breath-sub">Tap to start a 30-second grounding cycle.</div>
+                </div>
+              </div>
+              <button type="button" class="btn-grounding-pause" id="btnQuickBreathPause">
+                <span class="material-symbols-outlined">play_arrow</span>
+                <span>Grounding Pause</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Column (5 cols): Visual Sanctuary Card -->
+          <div class="welcome-right-col">
+            <div class="sanctuary-card">
+              <div class="decor-circle decor-circle-1" aria-hidden="true"></div>
+              <div class="decor-circle decor-circle-2" aria-hidden="true"></div>
+
+              <div class="sanctuary-content-top">
+                <div class="sanctuary-glyph-box">
+                  <span class="material-symbols-outlined">eco</span>
+                </div>
+
+                <h2 class="sanctuary-title">Your well-being matters.</h2>
+                <p class="sanctuary-desc">
+                  Take one small step at a time. You are not expected to figure everything out alone.
+                </p>
+
+                <!-- BVM Campus Photo Frame with bvm_image.webp -->
+                <div class="sanctuary-photo-frame" title="Birla Vishvakarma Mahavidyalaya Campus">
+                  <img src="bvm_image.webp" alt="Birla Vishvakarma Mahavidyalaya Engineering College Campus and Gardens" id="campusSanctuaryImg">
+                  <div class="photo-overlay-tag">
+                    <span class="material-symbols-outlined" style="font-size: 16px;">park</span>
+                    <span>Birla Vishvakarma Mahavidyalaya • Quiet Hours Active</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Gentle Breath Pacer Indicator -->
+              <div class="live-pulse-container" id="sanctuaryPulseTrigger" title="Tap to expand guided breathing">
+                <div class="pulse-indicator-left">
+                  <div class="pulse-ring-wrap">
+                    <div class="pulse-ring-anim"></div>
+                    <div class="pulse-ring-dot"></div>
+                  </div>
+                  <span class="pulse-label">Gentle Breath Pacing</span>
+                </div>
+                <span class="pulse-phase-text" id="liveBreathPhaseText">Inhale...</span>
+              </div>
+
+              <!-- Reassure Strip -->
+              <div class="sanctuary-reassure-strip">
+                <span class="material-symbols-outlined" style="color: var(--secondary); font-size: 16px;">schedule</span>
+                <span>Takes 2–3 mins</span>
+                <span>•</span>
+                <span>Completely Anonymous</span>
+                <span>•</span>
+                <span class="highlight">Tap to begin</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           SCREEN 2: MOOD CHECK & INFLUENCES (Screen 2 Mockup)
+           ================================================================ -->
+      <section class="screen-container" id="screenMoodCheck" aria-labelledby="moodHeading">
+        <div class="flow-card-wrapper">
+          
+          <!-- Top Meta -->
+          <div class="flow-top-meta">
+            <div class="step-indicator-pill">
+              <span class="step-pulse-dot"></span>
+              <span>Step 1 of 3 • Self Check-In</span>
+            </div>
+            <div class="screen-inactivity-hint">
+              <span class="material-symbols-outlined">lock</span>
+              <span>Screen auto-clears after 60s of inactivity</span>
+            </div>
+          </div>
+
+          <!-- Main Header -->
+          <div class="flow-title-block">
+            <h1 class="flow-main-title" id="moodHeading">How are you feeling?</h1>
+            <p class="flow-main-sub">Choose the words that feel closest to how you are right now.</p>
+          </div>
+
+          <!-- 6 Interactive Mood Cards (3 x 2 Grid) -->
+          <div class="mood-grid" role="radiogroup" aria-label="Select your current mood">
+            <!-- 1. Happy -->
+            <button type="button" class="mood-card" data-mood="Happy" role="radio" aria-checked="false">
+              <div class="mood-card-left">
+                <div class="mood-icon-wrap">
+                  <span class="material-symbols-outlined">wb_sunny</span>
+                </div>
+                <div class="mood-texts">
+                  <span class="mood-name">Happy</span>
+                  <span class="mood-caption">Content &amp; energized</span>
+                </div>
+              </div>
+              <div class="mood-check-circle" aria-hidden="true">
+                <span class="material-symbols-outlined" style="font-size: 20px;">check</span>
+              </div>
+            </button>
+
+            <!-- 2. Okay -->
+            <button type="button" class="mood-card" data-mood="Okay" role="radio" aria-checked="false">
+              <div class="mood-card-left">
+                <div class="mood-icon-wrap">
+                  <span class="material-symbols-outlined">sentiment_satisfied</span>
+                </div>
+                <div class="mood-texts">
+                  <span class="mood-name">Okay</span>
+                  <span class="mood-caption">Doing alright today</span>
+                </div>
+              </div>
+              <div class="mood-check-circle" aria-hidden="true">
+                <span class="material-symbols-outlined" style="font-size: 20px;">check</span>
+              </div>
+            </button>
+
+            <!-- 3. Neutral -->
+            <button type="button" class="mood-card" data-mood="Neutral" role="radio" aria-checked="false">
+              <div class="mood-card-left">
+                <div class="mood-icon-wrap">
+                  <span class="material-symbols-outlined">horizontal_rule</span>
+                </div>
+                <div class="mood-texts">
+                  <span class="mood-name">Neutral</span>
+                  <span class="mood-caption">Just getting by</span>
+                </div>
+              </div>
+              <div class="mood-check-circle" aria-hidden="true">
+                <span class="material-symbols-outlined" style="font-size: 20px;">check</span>
+              </div>
+            </button>
+
+            <!-- 4. Stressed -->
+            <button type="button" class="mood-card selected" data-mood="Stressed" role="radio" aria-checked="true">
+              <div class="mood-card-left">
+                <div class="mood-icon-wrap">
+                  <span class="material-symbols-outlined">grain</span>
+                </div>
+                <div class="mood-texts">
+                  <span class="mood-name">Stressed</span>
+                  <span class="mood-caption">Under pressure or tense</span>
+                </div>
+              </div>
+              <div class="mood-check-circle" aria-hidden="true">
+                <span class="material-symbols-outlined" style="font-size: 20px; font-weight: bold;">check</span>
+              </div>
+            </button>
+
+            <!-- 5. Sad -->
+            <button type="button" class="mood-card" data-mood="Sad" role="radio" aria-checked="false">
+              <div class="mood-card-left">
+                <div class="mood-icon-wrap">
+                  <span class="material-symbols-outlined">water_drop</span>
+                </div>
+                <div class="mood-texts">
+                  <span class="mood-name">Sad</span>
+                  <span class="mood-caption">Down or low energy</span>
+                </div>
+              </div>
+              <div class="mood-check-circle" aria-hidden="true">
+                <span class="material-symbols-outlined" style="font-size: 20px;">check</span>
+              </div>
+            </button>
+
+            <!-- 6. Anxious -->
+            <button type="button" class="mood-card" data-mood="Anxious" role="radio" aria-checked="false">
+              <div class="mood-card-left">
+                <div class="mood-icon-wrap">
+                  <span class="material-symbols-outlined">air</span>
+                </div>
+                <div class="mood-texts">
+                  <span class="mood-name">Anxious</span>
+                  <span class="mood-caption">Restless or worried</span>
+                </div>
+              </div>
+              <div class="mood-check-circle" aria-hidden="true">
+                <span class="material-symbols-outlined" style="font-size: 20px;">check</span>
+              </div>
+            </button>
+          </div>
+
+          <!-- Secondary Prompt: What is affecting you most? -->
+          <div class="influences-container">
+            <div class="influences-title-row">
+              <span class="material-symbols-outlined">psychology_alt</span>
+              <h2 class="influences-title">What is affecting you most?</h2>
+            </div>
+            <p class="influences-sub">Select one or more that apply today to tailor instant grounding recommendations.</p>
+
+            <div class="pills-cloud" id="influencesPillsCloud" role="group" aria-label="Select influences">
+              <button type="button" class="topic-pill selected" data-topic="Academic Work" aria-pressed="true">
+                <span class="material-symbols-outlined pill-check">check</span>
+                <span>Academic Work</span>
+              </button>
+              <button type="button" class="topic-pill" data-topic="Exams" aria-pressed="false">
+                <span class="material-symbols-outlined pill-check">check</span>
+                <span>Exams &amp; Mid-Sems</span>
+              </button>
+              <button type="button" class="topic-pill" data-topic="Sleep" aria-pressed="false">
+                <span class="material-symbols-outlined pill-check">check</span>
+                <span>Sleep &amp; Fatigue</span>
+              </button>
+              <button type="button" class="topic-pill" data-topic="Relationships" aria-pressed="false">
+                <span class="material-symbols-outlined pill-check">check</span>
+                <span>Relationships</span>
+              </button>
+              <button type="button" class="topic-pill" data-topic="Loneliness" aria-pressed="false">
+                <span class="material-symbols-outlined pill-check">check</span>
+                <span>Hostel &amp; Loneliness</span>
+              </button>
+              <button type="button" class="topic-pill" data-topic="Placements" aria-pressed="false">
+                <span class="material-symbols-outlined pill-check">check</span>
+                <span>Placements &amp; Career</span>
+              </button>
+              <button type="button" class="topic-pill" data-topic="Other" aria-pressed="false">
+                <span class="material-symbols-outlined pill-check">check</span>
+                <span>Other</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bottom Navigation Bar -->
+          <div class="flow-bottom-bar">
+            <button type="button" class="btn-flow-back" id="btnMoodBack">
+              <span class="material-symbols-outlined">arrow_back</span>
+              <span>Back to Home</span>
+            </button>
+
+            <button type="button" class="btn-flow-continue" id="btnMoodContinue">
+              <span>Continue</span>
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           SCREEN 3: ASSESSMENT QUESTIONNAIRE (Screen 3 Mockup)
+           ================================================================ -->
+      <section class="screen-container" id="screenAssessment" aria-labelledby="assessmentHeading">
+        <div class="flow-card-wrapper">
+          
+          <!-- Top Meta -->
+          <div class="flow-top-meta">
+            <div class="step-indicator-pill">
+              <span class="step-pulse-dot"></span>
+              <span id="assessmentStepBadge">Question 1 of 8</span>
+            </div>
+            <div class="screen-inactivity-hint">
+              <span class="material-symbols-outlined">lock</span>
+              <span>Anonymous &amp; Untracked</span>
+            </div>
+          </div>
+
+          <!-- Main Header -->
+          <div class="flow-title-block">
+            <h1 class="flow-main-title" id="assessmentHeading">Quick well-being check</h1>
+            <p class="flow-main-sub">Answer based on how you have been feeling recently. Take your time—there are no right or wrong answers.</p>
+          </div>
+
+          <!-- Assessment Card -->
+          <div class="assessment-card">
+            <div class="assessment-meta-header">
+              <div class="assessment-category-badge" id="questionCategoryBadge">
+                <span class="material-symbols-outlined">psychology_alt</span>
+                <span id="questionCategoryText">Academic Load &amp; Stress</span>
+              </div>
+              <div class="assessment-security-tag">
+                <span class="material-symbols-outlined" style="font-size: 16px;">lock</span>
+                <span>Zero Data Retained</span>
+              </div>
+            </div>
+
+            <div class="assessment-question-box">
+              <h2 class="assessment-question-title" id="questionPromptText">
+                How often have you felt overwhelmed by your academic work?
+              </h2>
+              <p class="assessment-question-hint" id="questionHintText">
+                Think about course deadlines, study hours, or exam preparations over the past two weeks.
+              </p>
+            </div>
+
+            <!-- 4 Frequency Option Cards -->
+            <div class="options-radiogroup" id="assessmentOptionsGroup" role="radiogroup" aria-labelledby="questionPromptText">
+              <!-- 0: Never -->
+              <button type="button" class="option-row-card" data-value="0" role="radio" aria-checked="false">
+                <div class="option-row-left">
+                  <div class="option-icon-wrap">
+                    <span class="material-symbols-outlined">wb_sunny</span>
+                  </div>
+                  <div class="option-details">
+                    <span class="option-label-text">Never</span>
+                    <span class="option-desc-text">Feeling calm, balanced, and fully in control</span>
+                  </div>
+                </div>
+                <div class="option-radio-dot">
+                  <div class="option-radio-inner"></div>
+                </div>
+              </button>
+
+              <!-- 1: Sometimes (Default active) -->
+              <button type="button" class="option-row-card active" data-value="1" role="radio" aria-checked="true">
+                <div class="option-row-left">
+                  <div class="option-icon-wrap">
+                    <span class="material-symbols-outlined">filter_drama</span>
+                  </div>
+                  <div class="option-details">
+                    <span class="option-label-text">Sometimes</span>
+                    <span class="option-desc-text">Manageable pressure during peak assignment dates</span>
+                  </div>
+                </div>
+                <div class="option-radio-dot">
+                  <div class="option-radio-inner"></div>
+                </div>
+              </button>
+
+              <!-- 2: Often -->
+              <button type="button" class="option-row-card" data-value="2" role="radio" aria-checked="false">
+                <div class="option-row-left">
+                  <div class="option-icon-wrap">
+                    <span class="material-symbols-outlined">thunderstorm</span>
+                  </div>
+                  <div class="option-details">
+                    <span class="option-label-text">Often</span>
+                    <span class="option-desc-text">Persistent tension that affects daily rest or focus</span>
+                  </div>
+                </div>
+                <div class="option-radio-dot">
+                  <div class="option-radio-inner"></div>
+                </div>
+              </button>
+
+              <!-- 3: Very Often -->
+              <button type="button" class="option-row-card" data-value="3" role="radio" aria-checked="false">
+                <div class="option-row-left">
+                  <div class="option-icon-wrap">
+                    <span class="material-symbols-outlined">crisis_alert</span>
+                  </div>
+                  <div class="option-details">
+                    <span class="option-label-text">Very Often</span>
+                    <span class="option-desc-text">Constant exhaustion, dread, or falling behind</span>
+                  </div>
+                </div>
+                <div class="option-radio-dot">
+                  <div class="option-radio-inner"></div>
+                </div>
+              </button>
+            </div>
+
+            <!-- Progress Track -->
+            <div class="assessment-progress-wrapper">
+              <div class="progress-labels-row">
+                <span id="progressStepCount">Question 1 of 8</span>
+                <span id="progressPercentText">12.5% Complete</span>
+              </div>
+              <div class="progress-track-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="8">
+                <div class="progress-fill-bar" id="assessmentProgressBarFill" style="width: 12.5%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Navigation Bar -->
+          <div class="flow-bottom-bar">
+            <button type="button" class="btn-flow-back" id="btnAssessmentBack">
+              <span class="material-symbols-outlined">arrow_back</span>
+              <span>Back</span>
+            </button>
+
+            <div style="display: flex; gap: 0.75rem;">
+              <button type="button" class="btn-flow-back" id="btnAssessmentSkip" style="font-size: 0.95rem;">
+                <span>Skip Question</span>
+              </button>
+
+              <button type="button" class="btn-flow-continue" id="btnAssessmentNext">
+                <span id="assessmentNextBtnText">Next</span>
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           SCREEN 4: RESULTS & PERSONAL SUMMARY (Screen 4 Mockup)
+           ================================================================ -->
+      <section class="screen-container" id="screenResults" aria-labelledby="resultsHeading">
+        <div class="flow-card-wrapper">
+          
+          <div class="flow-title-block">
+            <div class="results-level-pill moderate" id="resultStatusBadge">
+              <span class="material-symbols-outlined" style="font-size: 16px;">spa</span>
+              <span id="resultBadgeText">Moderate Stress</span>
+            </div>
+            <h1 class="flow-main-title" id="resultsHeading">Your well-being check</h1>
+            <p class="flow-main-sub" id="resultMainSubtitle">
+              Your responses suggest that you may be experiencing some stress at the moment.
+            </p>
+          </div>
+
+          <!-- Results Hero Card -->
+          <div class="results-hero-card">
+            <div class="results-icon-glyph">
+              <span class="material-symbols-outlined" style="font-size: 30px;">spa</span>
+            </div>
+            <h2 class="results-reflection-title" id="resultReflectionTitle">You're carrying some pressure.</h2>
+            <p class="results-reflection-text" id="resultReflectionDesc">
+              That can happen during demanding academic periods. A few small support steps may help you feel more balanced.
+            </p>
+
+            <div class="results-disclaimer-note">
+              <span class="material-symbols-outlined">verified_user</span>
+              <p>
+                Remember: this check-in is not a medical assessment or permanent record. It is completely anonymous and designed solely for your present self-care.
+              </p>
+            </div>
+          </div>
+
+          <!-- 3 Recommendation Shortcut Cards -->
+          <div class="results-actions-grid">
+            <!-- Breathing Exercise -->
+            <div class="rec-tool-card" id="recBreathingCard" role="button" tabindex="0">
+              <div>
+                <div class="rec-card-top-row">
+                  <div class="rec-card-icon blue">
+                    <span class="material-symbols-outlined">air</span>
+                  </div>
+                  <span class="rec-time-badge">2 mins • Guided Audio</span>
+                </div>
+                <h3 class="rec-title">Breathing Exercise</h3>
+                <p class="rec-desc">Take a few minutes to slow your breathing and reset your nervous system.</p>
+              </div>
+              <div class="rec-card-action-link">
+                <span>Start Exercise</span>
+                <span class="material-symbols-outlined" style="font-size: 20px;">arrow_forward</span>
+              </div>
+            </div>
+
+            <!-- Relaxation Activity -->
+            <div class="rec-tool-card" id="recRelaxationCard" role="button" tabindex="0">
+              <div>
+                <div class="rec-card-top-row">
+                  <div class="rec-card-icon green">
+                    <span class="material-symbols-outlined">self_improvement</span>
+                  </div>
+                  <span class="rec-time-badge">3 mins • Relaxation</span>
+                </div>
+                <h3 class="rec-title">Relaxation Activity</h3>
+                <p class="rec-desc">Try a gentle physical sequence to release tension in your shoulders and jaw.</p>
+              </div>
+              <div class="rec-card-action-link">
+                <span>Begin Activity</span>
+                <span class="material-symbols-outlined" style="font-size: 20px;">arrow_forward</span>
+              </div>
+            </div>
+
+            <!-- Self-Help Resources -->
+            <div class="rec-tool-card" id="recResourcesCard" role="button" tabindex="0">
+              <div>
+                <div class="rec-card-top-row">
+                  <div class="rec-card-icon slate">
+                    <span class="material-symbols-outlined">menu_book</span>
+                  </div>
+                  <span class="rec-time-badge">Toolkits &amp; Guides</span>
+                </div>
+                <h3 class="rec-title">Self-Help Resources</h3>
+                <p class="rec-desc">Explore practical, student-tested guides for sleep, exams, and workload.</p>
+              </div>
+              <div class="rec-card-action-link">
+                <span>Explore Resources</span>
+                <span class="material-symbols-outlined" style="font-size: 20px;">arrow_forward</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Navigation Bar -->
+          <div class="flow-bottom-bar" style="justify-content: center; gap: 1rem;">
+            <button type="button" class="btn-flow-back" id="btnResultsHome">
+              <span class="material-symbols-outlined">home</span>
+              <span>Back to Home</span>
+            </button>
+
+            <button type="button" class="btn-flow-continue" id="btnResultsToSelfHelp" style="background: var(--surface-container-lowest); color: var(--primary); border: 1.5px solid var(--border-card);">
+              <span class="material-symbols-outlined">spa</span>
+              <span>Explore Self-Help</span>
+            </button>
+
+            <button type="button" class="btn-flow-continue" id="btnResultsToCounseling">
+              <span class="material-symbols-outlined">support_agent</span>
+              <span>Talk to a Counselor</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           SCREEN 5: SELF-HELP TOOLS & COPING LIBRARY (Screen 5 Mockup)
+           ================================================================ -->
+      <section class="screen-container" id="screenSelfHelp" aria-labelledby="selfHelpHeading">
+        <div class="flow-card-wrapper">
+          
+          <div class="flow-title-block">
+            <div class="pill-badge" style="margin-left: auto; margin-right: auto;">
+              <span class="material-symbols-outlined">self_improvement</span>
+              <span>Self-Directed Care</span>
+            </div>
+            <h1 class="flow-main-title" id="selfHelpHeading">Support you can try now</h1>
+            <p class="flow-main-sub">Simple resources you can explore at your own pace.</p>
+          </div>
+
+          <!-- 2 x 2 Interactive Tool Cards Grid -->
+          <div class="selfhelp-grid">
+            <!-- 1. Breathing Exercise -->
+            <div class="tool-large-card" id="toolCardBreathing">
+              <div>
+                <div class="tool-card-head">
+                  <div class="tool-avatar-box">
+                    <span class="material-symbols-outlined" style="font-size: 32px;">air</span>
+                  </div>
+                  <span class="tool-duration-tag">3-5 mins</span>
+                </div>
+                <h2 class="tool-heading">Breathing Exercise</h2>
+                <p class="tool-summary">Calm your mind with a guided breathing activity.</p>
+              </div>
+              <button type="button" class="btn-tool-launch" id="btnLaunchBreathingModal">
+                <span>Try Now</span>
+                <span class="material-symbols-outlined" style="font-size: 18px;">play_arrow</span>
+              </button>
+            </div>
+
+            <!-- 2. Relaxation -->
+            <div class="tool-large-card" id="toolCardRelaxation">
+              <div>
+                <div class="tool-card-head">
+                  <div class="tool-avatar-box secondary">
+                    <span class="material-symbols-outlined" style="font-size: 32px;">self_improvement</span>
+                  </div>
+                  <span class="tool-duration-tag">Audio guided</span>
+                </div>
+                <h2 class="tool-heading">Relaxation</h2>
+                <p class="tool-summary">Try a short relaxation and sensory grounding exercise.</p>
+              </div>
+              <button type="button" class="btn-tool-launch" id="btnLaunchRelaxationModal">
+                <span>Try Now</span>
+                <span class="material-symbols-outlined" style="font-size: 18px;">headphones</span>
+              </button>
+            </div>
+
+            <!-- 3. Self-Help Resources -->
+            <div class="tool-large-card" id="toolCardResources">
+              <div>
+                <div class="tool-card-head">
+                  <div class="tool-avatar-box tertiary">
+                    <span class="material-symbols-outlined" style="font-size: 32px;">menu_book</span>
+                  </div>
+                  <span class="tool-duration-tag">Guides &amp; PDFs</span>
+                </div>
+                <h2 class="tool-heading">Self-Help Resources</h2>
+                <p class="tool-summary">Read practical resources for stress, sleep, and well-being.</p>
+              </div>
+              <button type="button" class="btn-tool-launch" id="btnLaunchResourcesModal">
+                <span>Explore</span>
+                <span class="material-symbols-outlined" style="font-size: 18px;">library_books</span>
+              </button>
+            </div>
+
+            <!-- 4. AI Support Assistant -->
+            <div class="tool-large-card" id="toolCardAi">
+              <div>
+                <div class="tool-card-head">
+                  <div class="tool-avatar-box">
+                    <span class="material-symbols-outlined" style="font-size: 32px;">forum</span>
+                  </div>
+                  <span class="tool-duration-tag">Interactive Q&amp;A</span>
+                </div>
+                <h2 class="tool-heading">AI Support Assistant</h2>
+                <p class="tool-summary">Get guided empathetic support and explore helpful next steps.</p>
+              </div>
+              <button type="button" class="btn-tool-launch" id="btnLaunchAiModal">
+                <span>Try Now</span>
+                <span class="material-symbols-outlined" style="font-size: 18px;">smart_toy</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Reassure Note -->
+          <div class="sanctuary-reassure-strip" style="max-width: 500px; margin: 0 auto 1.5rem;">
+            <span class="material-symbols-outlined" style="color: var(--secondary);">eco</span>
+            <span>You can return here whenever you need a moment of support.</span>
+          </div>
+
+          <!-- Bottom Navigation Bar -->
+          <div class="flow-bottom-bar" style="justify-content: center; gap: 1rem;">
+            <button type="button" class="btn-flow-back" id="btnSelfHelpHome">
+              <span class="material-symbols-outlined">home</span>
+              <span>Back to Home</span>
+            </button>
+
+            <button type="button" class="btn-flow-continue" id="btnSelfHelpToCounseling">
+              <span>Counseling Support</span>
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           SCREEN 6: UNIVERSITY COUNSELING CONNECTION (Screen 6 Mockup)
+           ================================================================ -->
+      <section class="screen-container" id="screenCounseling" aria-labelledby="counselingHeading">
+        <div class="flow-card-wrapper">
+          
+          <div class="flow-title-block">
+            <div class="pill-badge" style="margin-left: auto; margin-right: auto; background: rgba(176, 236, 210, 0.5); color: var(--secondary);">
+              <span class="material-symbols-outlined">lock</span>
+              <span>Completely Confidential • Student Wellness Care</span>
+            </div>
+            <h1 class="flow-main-title" id="counselingHeading">University counseling support</h1>
+            <p class="flow-main-sub">Would you like to connect with a university counselor?</p>
+          </div>
+
+          <!-- 3 Support Options Cards -->
+          <div class="counseling-choices-grid" role="radiogroup" aria-label="Counseling Support Choices">
+            <!-- 1: Book Appointment (Selected Default) -->
+            <button type="button" class="counseling-card selected" data-counseling="Book an Appointment" role="radio" aria-checked="true">
+              <div class="counseling-card-top">
+                <div class="counseling-avatar">
+                  <span class="material-symbols-outlined">calendar_today</span>
+                </div>
+                <div class="counseling-radio-dot">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">check</span>
+                </div>
+              </div>
+              <div>
+                <h2 class="counseling-card-title">Book an Appointment</h2>
+                <p class="counseling-card-desc">Choose a suitable time to meet a counselor on campus or virtually.</p>
+              </div>
+              <div class="counseling-badge-row">
+                <span class="material-symbols-outlined">verified</span>
+                <span>In-person or Telehealth</span>
+              </div>
+            </button>
+
+            <!-- 2: Request Callback -->
+            <button type="button" class="counseling-card" data-counseling="Request a Callback" role="radio" aria-checked="false">
+              <div class="counseling-card-top">
+                <div class="counseling-avatar blue">
+                  <span class="material-symbols-outlined">phone_in_talk</span>
+                </div>
+                <div class="counseling-radio-dot">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">check</span>
+                </div>
+              </div>
+              <div>
+                <h2 class="counseling-card-title">Request a Callback</h2>
+                <p class="counseling-card-desc">Ask a counselor to contact you privately at a discreet hour.</p>
+              </div>
+              <div class="counseling-badge-row" style="color: var(--on-surface-variant);">
+                <span class="material-symbols-outlined">schedule</span>
+                <span>Response within 4 business hours</span>
+              </div>
+            </button>
+
+            <!-- 3: View Available Support -->
+            <button type="button" class="counseling-card" data-counseling="View Available Support" role="radio" aria-checked="false">
+              <div class="counseling-card-top">
+                <div class="counseling-avatar slate">
+                  <span class="material-symbols-outlined">explore</span>
+                </div>
+                <div class="counseling-radio-dot">
+                  <span class="material-symbols-outlined" style="font-size: 16px;">check</span>
+                </div>
+              </div>
+              <div>
+                <h2 class="counseling-card-title">View Available Support</h2>
+                <p class="counseling-card-desc">See the spectrum of mental health services and specialized groups.</p>
+              </div>
+              <div class="counseling-badge-row" style="color: var(--on-surface-variant);">
+                <span class="material-symbols-outlined">menu_book</span>
+                <span>Browse BVM campus programs</span>
+              </div>
+            </button>
+          </div>
+
+          <!-- Schedule & Preferences Panel -->
+          <div class="schedule-panel-card">
+            <div class="schedule-header-row">
+              <h3 class="schedule-section-title">Preferred time</h3>
+              <span class="schedule-section-sub">When are you easiest to reach or free to talk?</span>
+            </div>
+
+            <!-- Time Slots -->
+            <div class="time-slots-grid" role="radiogroup" aria-label="Preferred Time Slot">
+              <button type="button" class="time-slot-btn selected" data-time="Morning" role="radio" aria-checked="true">
+                <span class="material-symbols-outlined">wb_twilight</span>
+                <span>Morning (8 AM – 12 PM)</span>
+              </button>
+
+              <button type="button" class="time-slot-btn" data-time="Afternoon" role="radio" aria-checked="false">
+                <span class="material-symbols-outlined">wb_sunny</span>
+                <span>Afternoon (12 PM – 4 PM)</span>
+              </button>
+
+              <button type="button" class="time-slot-btn" data-time="Evening" role="radio" aria-checked="false">
+                <span class="material-symbols-outlined">dark_mode</span>
+                <span>Evening (4 PM – 7 PM)</span>
+              </button>
+            </div>
+
+            <!-- Notes Field -->
+            <div class="note-input-container">
+              <div class="note-input-header">
+                <label for="counselingNoteInput">Anything you'd like us to know? <span style="font-weight: normal; color: var(--on-surface-variant);">(Optional)</span></label>
+                <span id="noteCharCounter">0 / 250</span>
+              </div>
+              <textarea class="counseling-textarea" id="counselingNoteInput" maxlength="250" placeholder="e.g., I'd prefer a remote session or have lab file submission conflicts..."></textarea>
+              <div class="textarea-footer-row">
+                <span style="display: flex; align-items: center; gap: 0.3rem;">
+                  <span class="material-symbols-outlined" style="font-size: 14px; color: var(--secondary);">lock</span>
+                  Protected by campus privacy and counseling confidentiality
+                </span>
+                <span>100% Anonymous Pass Available</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reassurance Strip -->
+          <div class="sanctuary-reassure-strip" style="max-width: 600px; margin: 0 auto 1.5rem;">
+            <span class="material-symbols-outlined" style="color: var(--secondary);">verified_user</span>
+            <span>Your request is handled confidentially by the BVM student wellness team.</span>
+          </div>
+
+          <!-- Bottom Navigation Bar -->
+          <div class="flow-bottom-bar">
+            <button type="button" class="btn-flow-back" id="btnCounselingBack">
+              <span class="material-symbols-outlined">arrow_back</span>
+              <span>Back</span>
+            </button>
+
+            <button type="button" class="btn-flow-continue" id="btnSubmitCounselingPass">
+              <span class="material-symbols-outlined">confirmation_number</span>
+              <span>Generate Confidential Pass</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ====================================================================
+         PERSISTENT FOOTER STATUS BAR (Matches Design System)
+         ==================================================================== -->
+    <footer class="kiosk-footer" role="contentinfo">
+      <!-- Left: 24/7 Crisis Callout -->
+      <div class="footer-left">
+        <div class="crisis-callout">
+          <span class="material-symbols-outlined">emergency</span>
+          <span>24/7 Campus Crisis Line: (800) 273-TALK</span>
+        </div>
+        <span class="footer-bullet">•</span>
+        <span class="footer-sub-note">BVM Counseling Room B-201 • National Helpline: 1800-599-0019 (KIRAN)</span>
+      </div>
+
+      <!-- Right: Accessibility & Quick Reset -->
+      <div class="footer-right">
+        <button type="button" class="btn-footer-tool" id="btnFooterAccessibility">
+          <span class="material-symbols-outlined">accessibility_new</span>
+          <span>Accessibility</span>
+        </button>
+
+        <button type="button" class="btn-footer-tool" id="btnFooterReset">
+          <span class="material-symbols-outlined">restart_alt</span>
+          <span>Quick Exit / Reset</span>
+        </button>
+      </div>
+    </footer>
+
+    <!-- ====================================================================
+         INTERACTIVE MODALS & OVERLAYS
+         ==================================================================== -->
+
+    <!-- 1. Interactive Guided Box Breathing Modal -->
+    <div class="modal-overlay" id="modalBreathing" role="dialog" aria-modal="true" aria-labelledby="modalBreathingTitle">
+      <div class="modal-sheet">
+        <div class="modal-header-bar">
+          <div class="modal-title-wrap">
+            <div class="modal-title-icon">
+              <span class="material-symbols-outlined">air</span>
+            </div>
+            <h2 class="modal-title" id="modalBreathingTitle">Guided Box Breathing</h2>
+          </div>
+          <button type="button" class="btn-modal-close" id="btnCloseBreathing" aria-label="Close">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="modal-body-content">
+          <div class="breathing-visual-stage">
+            <div class="breath-circle-outer" id="breathOuterCircle">
+              <div class="breath-circle-middle">
+                <div class="breath-circle-core">
+                  <span class="breath-action-text" id="breathPhaseTitle">Inhale</span>
+                  <span class="breath-countdown-sec" id="breathSecondsDisplay">4s</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="breath-stats-row">
+              <span id="breathCycleCounter">Cycle 1 of 4</span>
+              <span>•</span>
+              <span id="breathRhythmLabel">Box Breathing (4-4-4-4)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer-bar">
+          <button type="button" class="btn-flow-back" id="btnToggleBreathPlay">
+            <span class="material-symbols-outlined" id="breathPlayIcon">pause</span>
+            <span id="breathPlayText">Pause</span>
+          </button>
+
+          <button type="button" class="btn-flow-continue" id="btnFinishBreathing">
+            <span>Done &amp; Return</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Interactive 5-4-3-2-1 Sensory Grounding Modal -->
+    <div class="modal-overlay" id="modalGrounding" role="dialog" aria-modal="true" aria-labelledby="modalGroundingTitle">
+      <div class="modal-sheet">
+        <div class="modal-header-bar">
+          <div class="modal-title-wrap">
+            <div class="modal-title-icon" style="background: rgba(176, 236, 210, 0.5); color: var(--secondary);">
+              <span class="material-symbols-outlined">self_improvement</span>
+            </div>
+            <h2 class="modal-title" id="modalGroundingTitle">5-4-3-2-1 Sensory Grounding</h2>
+          </div>
+          <button type="button" class="btn-modal-close" id="btnCloseGrounding" aria-label="Close">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="modal-body-content">
+          <p style="font-family: var(--font-body); color: var(--on-surface-variant); margin-bottom: 1.25rem;">
+            When overwhelmed by coursework or anxiety, this technique grounds your senses in the present moment. Tap each step as you complete it:
+          </p>
+
+          <div class="grounding-steps-list">
+            <div class="grounding-step-item" id="groundStep5">
+              <div class="step-num-circle">5</div>
+              <div class="step-info-col">
+                <h4>5 things you can SEE</h4>
+                <p>Look around the room: notice the light, a leaf outside, the library table, a clock.</p>
+              </div>
+            </div>
+
+            <div class="grounding-step-item" id="groundStep4">
+              <div class="step-num-circle">4</div>
+              <div class="step-info-col">
+                <h4>4 things you can TOUCH</h4>
+                <p>Feel your shoes on the floor, the texture of your notebook, or the coolness of the kiosk.</p>
+              </div>
+            </div>
+
+            <div class="grounding-step-item" id="groundStep3">
+              <div class="step-num-circle">3</div>
+              <div class="step-info-col">
+                <h4>3 things you can HEAR</h4>
+                <p>Listen for campus sounds: distant wind, someone walking, air circulation.</p>
+              </div>
+            </div>
+
+            <div class="grounding-step-item" id="groundStep2">
+              <div class="step-num-circle">2</div>
+              <div class="step-info-col">
+                <h4>2 things you can SMELL</h4>
+                <p>Notice the air in the room, library paper, rain, or fresh morning grass.</p>
+              </div>
+            </div>
+
+            <div class="grounding-step-item" id="groundStep1">
+              <div class="step-num-circle">1</div>
+              <div class="step-info-col">
+                <h4>1 thing you can TASTE</h4>
+                <p>Take a sip of water, or take note of a calm, refreshing breath.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer-bar">
+          <span style="font-family: var(--font-label); font-size: 0.85rem; color: var(--on-surface-variant);">
+            Take all the time you need.
+          </span>
+          <button type="button" class="btn-flow-continue" id="btnFinishGrounding">
+            <span>I Feel More Grounded</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Self-Help Resources Library Modal -->
+    <div class="modal-overlay" id="modalResources" role="dialog" aria-modal="true" aria-labelledby="modalResourcesTitle">
+      <div class="modal-sheet">
+        <div class="modal-header-bar">
+          <div class="modal-title-wrap">
+            <div class="modal-title-icon" style="background: var(--surface-container); color: var(--tertiary);">
+              <span class="material-symbols-outlined">menu_book</span>
+            </div>
+            <h2 class="modal-title" id="modalResourcesTitle">Campus Self-Help Toolkits</h2>
+          </div>
+          <button type="button" class="btn-modal-close" id="btnCloseResources" aria-label="Close">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="modal-body-content">
+          <div class="modal-tabs-header">
+            <button type="button" class="tab-switch-btn active" data-tab="tabAcademic">Academic &amp; Exams</button>
+            <button type="button" class="tab-switch-btn" data-tab="tabSleep">Sleep Hygiene</button>
+            <button type="button" class="tab-switch-btn" data-tab="tabSanctuary">BVM Quiet Sanctuaries</button>
+          </div>
+
+          <!-- Tab 1: Academic & Exams -->
+          <div class="tab-pane active" id="tabAcademic">
+            <div class="tab-article-content">
+              <h3>Managing High-Stakes Exam &amp; Lab Pressures</h3>
+              <p>Engineering coursework presents dense deadlines. When work piles up, try the <strong>25/5 Sprint</strong>:</p>
+              <ul>
+                <li><strong>Break large projects into single micro-tasks</strong>: Outline just one problem statement rather than the whole assignment.</li>
+                <li><strong>Protect the first 45 minutes of morning</strong>: Avoid checking notification feeds; complete one hard problem first.</li>
+                <li><strong>Mid-Sem Stress Reset</strong>: If a test didn't go well, consult the course mentor during faculty office hours. Progress is iterative.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Tab 2: Sleep Hygiene -->
+          <div class="tab-pane" id="tabSleep">
+            <div class="tab-article-content">
+              <h3>Sleep Strategies for Engineering Students</h3>
+              <p>Late night coding or lab files disrupt sleep quality. Simple adjustments make a noticeable difference:</p>
+              <ul>
+                <li><strong>Screen cutoff 30 minutes before bed</strong>: Allow your eyes to decompress from monitor glare.</li>
+                <li><strong>Dim ambient hostel room lighting</strong>: Warmer light prompts your brain's natural melatonin production.</li>
+                <li><strong>Write down tomorrow's top 3 tasks</strong>: Transferring worries from your mind onto paper relieves overnight cognitive churning.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Tab 3: BVM Quiet Sanctuaries -->
+          <div class="tab-pane" id="tabSanctuary">
+            <div class="tab-article-content">
+              <h3>Peaceful Campus Spaces at BVM</h3>
+              <p>Need a silent spot between lectures? These spaces provide restorative quiet:</p>
+              <ul>
+                <li><strong>BVM Central Library 2nd Floor</strong>: Silent study desks with natural window daylight.</li>
+                <li><strong>Botanical Lawn &amp; Fountain Garden</strong>: Shaded benches under palm trees (behind main porch).</li>
+                <li><strong>Auditorium Courtyard</strong>: Peaceful breeze corridor in the afternoon.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer-bar">
+          <span style="font-family: var(--font-label); font-size: 0.85rem; color: var(--on-surface-variant);">
+            Free student resource guides
+          </span>
+          <button type="button" class="btn-flow-continue" id="btnDoneResources">
+            <span>Done</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. AI Support Assistant Modal -->
+    <div class="modal-overlay" id="modalAi" role="dialog" aria-modal="true" aria-labelledby="modalAiTitle">
+      <div class="modal-sheet">
+        <div class="modal-header-bar">
+          <div class="modal-title-wrap">
+            <div class="modal-title-icon" style="background: rgba(192, 232, 255, 0.6); color: var(--primary);">
+              <span class="material-symbols-outlined">smart_toy</span>
+            </div>
+            <h2 class="modal-title" id="modalAiTitle">AI Wellness Companion</h2>
+          </div>
+          <button type="button" class="btn-modal-close" id="btnCloseAi" aria-label="Close">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="modal-body-content">
+          <p style="font-family: var(--font-label); font-size: 0.85rem; color: var(--on-surface-variant); margin-bottom: 0.75rem;">
+            Tap a question or topic to receive instant non-judgmental guidance:
+          </p>
+
+          <div class="ai-chips-group">
+            <button type="button" class="ai-chip-prompt" data-query="overwhelmed">Overwhelmed before Mid-Sems</button>
+            <button type="button" class="ai-chip-prompt" data-query="sleep">Can't sleep due to racing thoughts</button>
+            <button type="button" class="ai-chip-prompt" data-query="lonely">Feeling isolated in hostel</button>
+            <button type="button" class="ai-chip-prompt" data-query="placement">Placement &amp; career anxiety</button>
+          </div>
+
+          <div class="ai-bubble-response">
+            <div class="ai-bot-avatar">
+              <span class="material-symbols-outlined" style="font-size: 22px;">psychology</span>
+            </div>
+            <div class="ai-bubble-text" id="aiResponseContent">
+              Hello! I'm your campus wellness assistant. Whatever you're going through today, remember that you are capable of handling one step at a time. Tap any prompt above or let me know how you're feeling right now.
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer-bar">
+          <span style="font-family: var(--font-label); font-size: 0.8rem; color: var(--on-surface-variant);">
+            100% anonymous &bull; No conversation logs saved
+          </span>
+          <button type="button" class="btn-flow-continue" id="btnDoneAi">
+            <span>Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Confidential Appointment Voucher Modal -->
+    <div class="modal-overlay" id="modalVoucher" role="dialog" aria-modal="true" aria-labelledby="modalVoucherTitle">
+      <div class="modal-sheet">
+        <div class="modal-header-bar">
+          <div class="modal-title-wrap">
+            <div class="modal-title-icon" style="background: rgba(176, 236, 210, 0.6); color: var(--secondary);">
+              <span class="material-symbols-outlined">confirmation_number</span>
+            </div>
+            <h2 class="modal-title" id="modalVoucherTitle">Confidential Appointment Pass</h2>
+          </div>
+          <button type="button" class="btn-modal-close" id="btnCloseVoucher" aria-label="Close">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="modal-body-content">
+          <div class="voucher-receipt-card">
+            <div class="voucher-crest-row">
+              <span class="material-symbols-outlined" style="font-size: 24px;">school</span>
+              <span>BVM WELLNESS CELL • PASS</span>
+            </div>
+
+            <div class="voucher-ticket-num" id="voucherTicketCode">BVM-WELL-8942</div>
+            <p style="font-family: var(--font-label); font-size: 0.85rem; color: var(--on-surface-variant);">
+              Show or quote this anonymous reference code upon visiting.
+            </p>
+
+            <div class="voucher-details-grid">
+              <div>
+                <span class="voucher-field-label">Service Type</span>
+                <p class="voucher-field-val" id="voucherServiceDisplay">Book an Appointment</p>
+              </div>
+              <div>
+                <span class="voucher-field-label">Preferred Slot</span>
+                <p class="voucher-field-val" id="voucherTimeDisplay">Morning (8 AM – 12 PM)</p>
+              </div>
+              <div>
+                <span class="voucher-field-label">Location</span>
+                <p class="voucher-field-val">Room B-201, Main Building</p>
+              </div>
+              <div>
+                <span class="voucher-field-label">Validity</span>
+                <p class="voucher-field-val">Valid for 7 Days</p>
+              </div>
+            </div>
+
+            <!-- Live SVG QR Code -->
+            <div class="voucher-qr-wrap">
+              <svg width="110" height="110" viewBox="0 0 100 100" style="background: #ffffff; padding: 6px; border-radius: 8px; border: 1px solid var(--border-card);">
+                <!-- Corner 1 -->
+                <rect x="5" y="5" width="26" height="26" fill="#1e5b74" rx="3"/>
+                <rect x="11" y="11" width="14" height="14" fill="#ffffff" rx="1"/>
+                <rect x="15" y="15" width="6" height="6" fill="#1e5b74"/>
+                <!-- Corner 2 -->
+                <rect x="69" y="5" width="26" height="26" fill="#1e5b74" rx="3"/>
+                <rect x="75" y="11" width="14" height="14" fill="#ffffff" rx="1"/>
+                <rect x="79" y="15" width="6" height="6" fill="#1e5b74"/>
+                <!-- Corner 3 -->
+                <rect x="5" y="69" width="26" height="26" fill="#1e5b74" rx="3"/>
+                <rect x="11" y="75" width="14" height="14" fill="#ffffff" rx="1"/>
+                <rect x="15" y="79" width="6" height="6" fill="#1e5b74"/>
+                <!-- Data dots pattern -->
+                <rect x="38" y="10" width="6" height="6" fill="#1e5b74"/>
+                <rect x="50" y="10" width="6" height="6" fill="#1e5b74"/>
+                <rect x="38" y="22" width="6" height="6" fill="#1e5b74"/>
+                <rect x="54" y="22" width="6" height="6" fill="#1e5b74"/>
+                <rect x="10" y="38" width="6" height="6" fill="#1e5b74"/>
+                <rect x="22" y="38" width="6" height="6" fill="#1e5b74"/>
+                <rect x="38" y="38" width="8" height="8" fill="#2f6954"/>
+                <rect x="52" y="38" width="6" height="6" fill="#1e5b74"/>
+                <rect x="68" y="38" width="6" height="6" fill="#1e5b74"/>
+                <rect x="82" y="38" width="6" height="6" fill="#1e5b74"/>
+                <rect x="38" y="52" width="6" height="6" fill="#1e5b74"/>
+                <rect x="68" y="52" width="6" height="6" fill="#1e5b74"/>
+                <rect x="82" y="52" width="6" height="6" fill="#1e5b74"/>
+                <rect x="38" y="68" width="6" height="6" fill="#1e5b74"/>
+                <rect x="52" y="68" width="8" height="8" fill="#1e5b74"/>
+                <rect x="68" y="68" width="6" height="6" fill="#1e5b74"/>
+                <rect x="52" y="82" width="6" height="6" fill="#1e5b74"/>
+                <rect x="68" y="82" width="6" height="6" fill="#1e5b74"/>
+                <rect x="82" y="82" width="6" height="6" fill="#1e5b74"/>
+              </svg>
+              <span style="font-family: var(--font-label); font-size: 0.75rem; color: var(--on-surface-variant);">
+                Snap with your phone camera or remember code
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer-bar">
+          <button type="button" class="btn-flow-back" id="btnPrintVoucher">
+            <span class="material-symbols-outlined">print</span>
+            <span>Print Pass</span>
+          </button>
+
+          <button type="button" class="btn-flow-continue" id="btnFinishVoucherSession">
+            <span>Clear &amp; Finish Session</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Inactivity Warning Modal -->
+    <div class="modal-overlay" id="modalInactivity" role="dialog" aria-modal="true" aria-labelledby="modalInactivityTitle">
+      <div class="modal-sheet" style="max-width: 480px;">
+        <div class="inactivity-modal-content">
+          <div class="inactivity-timer-circle" id="inactivityCountdownText">15</div>
+          <h2 class="modal-title" id="modalInactivityTitle" style="font-size: 1.6rem; margin-bottom: 0.5rem;">
+            Are you still there?
+          </h2>
+          <p style="font-family: var(--font-body); font-size: 1.05rem; color: var(--on-surface-variant); margin-bottom: 2rem;">
+            To safeguard your personal privacy, this kiosk will automatically clear in 15 seconds.
+          </p>
+
+          <div style="display: flex; gap: 1rem; justify-content: center;">
+            <button type="button" class="btn-flow-back" id="btnInactivityExitNow" style="background: var(--surface-container); color: var(--error);">
+              <span>Exit Now</span>
+            </button>
+            <button type="button" class="btn-flow-continue" id="btnInactivityContinue">
+              <span>I'm Still Here</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Accessibility Options Modal -->
+    <div class="modal-overlay" id="modalAccessibility" role="dialog" aria-modal="true" aria-labelledby="modalAccessTitle">
+      <div class="modal-sheet" style="max-width: 500px;">
+        <div class="modal-header-bar">
+          <div class="modal-title-wrap">
+            <div class="modal-title-icon">
+              <span class="material-symbols-outlined">accessibility_new</span>
+            </div>
+            <h2 class="modal-title" id="modalAccessTitle">Accessibility Options</h2>
+          </div>
+          <button type="button" class="btn-modal-close" id="btnCloseAccess" aria-label="Close">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="modal-body-content">
+          <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+            <!-- Text Size -->
+            <div>
+              <label style="font-family: var(--font-label); font-weight: 600; display: block; margin-bottom: 0.5rem;">Text Size</label>
+              <div style="display: flex; gap: 0.75rem;">
+                <button type="button" class="topic-pill selected" id="btnTextStandard">Standard (A)</button>
+                <button type="button" class="topic-pill" id="btnTextLarge">Large (A+)</button>
+              </div>
+            </div>
+
+            <!-- Sound Effects -->
+            <div>
+              <label style="font-family: var(--font-label); font-weight: 600; display: block; margin-bottom: 0.5rem;">Calming Audio &amp; Chimes</label>
+              <div style="display: flex; gap: 0.75rem;">
+                <button type="button" class="topic-pill selected" id="btnAudioOn">Enabled</button>
+                <button type="button" class="topic-pill" id="btnAudioOff">Muted</button>
+              </div>
+            </div>
+
+            <!-- High Contrast -->
+            <div>
+              <label style="font-family: var(--font-label); font-weight: 600; display: block; margin-bottom: 0.5rem;">Contrast Mode</label>
+              <div style="display: flex; gap: 0.75rem;">
+                <button type="button" class="topic-pill selected" id="btnContrastNormal">Default Calm</button>
+                <button type="button" class="topic-pill" id="btnContrastHigh">High Contrast</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer-bar">
+          <button type="button" class="btn-flow-continue" id="btnDoneAccess" style="width: 100%; justify-content: center;">
+            <span>Apply &amp; Return</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- End .kiosk-app -->
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

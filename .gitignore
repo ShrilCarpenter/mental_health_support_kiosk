@@ -1,0 +1,18 @@
+# System & Temporary
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# Screenshots
+screen*.png
+screenshot*.png
+
+# Node / Cache
+node_modules/
+.npm/
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
