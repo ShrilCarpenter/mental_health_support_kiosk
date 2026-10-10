@@ -16,7 +16,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
 
   <!-- Application Stylesheet -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
 
@@ -29,38 +29,43 @@
   <div class="kiosk-app" id="kioskApp">
 
     <!-- ====================================================================
-         PERSISTENT INSTITUTIONAL HEADER
+         PERSISTENT INSTITUTIONAL HEADER (PROPER 3-ZONE LAYOUT)
          ==================================================================== -->
     <header class="kiosk-header" role="banner">
-      <!-- Left: BVM Crest & Title -->
+      <!-- Left: BVM Blue Logo & College Name -->
       <div class="header-left">
-        <div class="institution-brand" id="brandHomeTrigger" role="button" tabindex="0" title="Return to Sanctuary Start">
-          <div class="institution-crest" aria-hidden="true">
-            <span class="material-symbols-outlined" style="font-size: 26px;">school</span>
-          </div>
+        <div class="institution-brand" id="brandHomeTrigger" role="button" tabindex="0" title="Return to Home">
+          <img src="bvm_logo.png" alt="BVM Engineering College Logo" class="header-logo-img" width="48" height="48">
           <div class="institution-details">
             <span class="institution-title">Campus Sanctuary</span>
-            <span class="institution-sub">BVM Engineering College • Student Well-Being Cell</span>
+            <span class="institution-sub">BVM Engineering College</span>
           </div>
         </div>
       </div>
 
-      <!-- Center: Confidentiality Pill & Navigation Track -->
+      <!-- Center: Clean Segmented Fast Navigation -->
       <div class="header-center">
-        <div class="confidential-pill">
-          <span class="material-symbols-outlined">verified_user</span>
-          <span>100% Private &amp; Confidential • No Records Stored</span>
-        </div>
-
-        <nav class="header-nav" aria-label="Kiosk Fast Navigation">
-          <button type="button" class="nav-pill-btn active" data-target="screenWelcome" id="navBtnStart">Start</button>
-          <button type="button" class="nav-pill-btn" data-target="screenMoodCheck" id="navBtnCheckIn">Check-In</button>
-          <button type="button" class="nav-pill-btn" data-target="screenSelfHelp" id="navBtnTools">Coping Tools</button>
-          <button type="button" class="nav-pill-btn" data-target="screenCounseling" id="navBtnCounseling">Counseling</button>
+        <nav class="header-nav" aria-label="Campus Sanctuary Navigation">
+          <button type="button" class="nav-pill-btn active" data-target="screenWelcome" id="navBtnStart">
+            <span class="material-symbols-outlined nav-pill-icon">home</span>
+            <span>Start</span>
+          </button>
+          <button type="button" class="nav-pill-btn" data-target="screenMoodCheck" id="navBtnCheckIn">
+            <span class="material-symbols-outlined nav-pill-icon">favorite</span>
+            <span>Check-In</span>
+          </button>
+          <button type="button" class="nav-pill-btn" data-target="screenSelfHelp" id="navBtnTools">
+            <span class="material-symbols-outlined nav-pill-icon">spa</span>
+            <span>Coping Tools</span>
+          </button>
+          <button type="button" class="nav-pill-btn" data-target="screenCounseling" id="navBtnCounseling">
+            <span class="material-symbols-outlined nav-pill-icon">support_agent</span>
+            <span>Counselor</span>
+          </button>
         </nav>
       </div>
 
-      <!-- Right: Clock, Accessibility, Audio, Quick Exit -->
+      <!-- Right: Clock, Sound Toggle, Quick Exit -->
       <div class="header-right">
         <div class="clock-display" id="kioskClock" title="Current Campus Time">
           <span class="material-symbols-outlined" style="font-size: 16px;">schedule</span>
@@ -71,16 +76,61 @@
           <span class="material-symbols-outlined" id="soundIcon">volume_up</span>
         </button>
 
-        <button type="button" class="btn-icon-control" id="btnHeaderAccessibility" title="Adjust text size and contrast" aria-label="Accessibility Options">
-          <span class="material-symbols-outlined">text_fields</span>
-        </button>
-
         <button type="button" class="btn-quick-exit-top" id="btnQuickExitTop" title="Immediately clear screen and wipe session" aria-label="Quick Exit / Privacy Wipe">
           <span class="material-symbols-outlined" style="font-size: 18px;">restart_alt</span>
           <span>Quick Exit</span>
         </button>
+
+        <!-- Mobile Navigation Hamburger -->
+        <button type="button" class="btn-icon-control mobile-only" id="mobileNavToggle" title="Open Navigation Menu" aria-label="Open Navigation Menu">
+          <span class="material-symbols-outlined" id="mobileNavIcon">menu</span>
+        </button>
       </div>
     </header>
+
+    <!-- Mobile Slide-Down Drawer Navigation -->
+    <div class="mobile-nav-drawer" id="mobileNavDrawer" aria-hidden="true">
+      <div class="mobile-nav-header">
+        <div class="institution-brand">
+          <img src="bvm_logo.png" alt="BVM Engineering College Logo" class="header-logo-img" width="48" height="48">
+          <div class="institution-details">
+            <span class="institution-title">Campus Sanctuary</span>
+            <span class="institution-sub">BVM Engineering College</span>
+          </div>
+        </div>
+        <button type="button" class="btn-icon-control" id="mobileNavClose" aria-label="Close Navigation">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="mobile-nav-links">
+        <button type="button" class="mobile-nav-link active" data-target="screenWelcome">
+          <span class="material-symbols-outlined">home</span>
+          <span>Start Sanctuary</span>
+        </button>
+        <button type="button" class="mobile-nav-link" data-target="screenMoodCheck">
+          <span class="material-symbols-outlined">favorite</span>
+          <span>Check-In &amp; Mood</span>
+        </button>
+        <button type="button" class="mobile-nav-link" data-target="screenSelfHelp">
+          <span class="material-symbols-outlined">spa</span>
+          <span>Coping Tools &amp; Guides</span>
+        </button>
+        <button type="button" class="mobile-nav-link" data-target="screenCounseling">
+          <span class="material-symbols-outlined">support_agent</span>
+          <span>Campus Counseling Cell</span>
+        </button>
+      </div>
+      <div class="mobile-nav-footer">
+        <button type="button" class="btn-toggle-backdrop-mobile" id="btnToggleBackdropMobile">
+          <span class="material-symbols-outlined">wallpaper</span>
+          <span>Toggle Vivid Campus View</span>
+        </button>
+        <div class="confidential-pill" style="justify-content: center; width: 100%;">
+          <span class="material-symbols-outlined">shield</span>
+          <span>100% Private &amp; Anonymous</span>
+        </div>
+      </div>
+    </div>
 
     <!-- ====================================================================
          MAIN VIEWPORT: 6 INTEGRATED KIOSK SCREENS
@@ -88,23 +138,29 @@
     <main class="kiosk-main" id="mainContent" role="main">
 
       <!-- ================================================================
-           SCREEN 1: WELCOME & SANCTUARY (Screen 1 Mockup)
+           SCREEN 1: WELCOME & PROPER BVM LANDING PAGE
            ================================================================ -->
       <section class="screen-container active" id="screenWelcome" aria-labelledby="welcomeHeading">
+        
+        <!-- SECTION 1: HERO SPOTLIGHT (BVM COLLEGE HERITAGE & DIRECT ACTION) -->
         <div class="welcome-grid">
           
-          <!-- Left Column (7 cols): Direct Action -->
+          <!-- Left Column (7 cols): Direct Action & College Mission -->
           <div class="welcome-left-col">
-            <div>
-              <div class="pill-badge">
-                <span class="material-symbols-outlined">shield</span>
-                <span>PRIVATE • NO LOGIN</span>
+            <div class="welcome-left-inner">
+              <!-- Institutional Heritage Ribbon -->
+              <div class="institution-hero-ribbon">
+                <span class="material-symbols-outlined" style="font-size: 16px;">account_balance</span>
+                <span>BIRLA VISHVAKARMA MAHAVIDYALAYA • ESTD. 1948 • VALLABH VIDYANAGAR</span>
+                <span class="hero-ribbon-sub">CVM Institution</span>
               </div>
 
-              <h1 class="welcome-heading" id="welcomeHeading">A calmer place to check in.</h1>
+              <h1 class="welcome-heading" id="welcomeHeading">
+                A Calmer, Confidential Space for Every BVM Engineer.
+              </h1>
 
               <p class="welcome-lead">
-                Take a moment to understand how you're feeling and discover simple support options — privately and at your own pace.
+                Balancing rigorous engineering coursework, mid-sem exams, practical lab files, and hostel transitions can feel overwhelming. Take 2 minutes to check in anonymously, discover instant calming tools, or connect directly with our campus counseling cell.
               </p>
 
               <!-- CTA Buttons Group -->
@@ -113,7 +169,7 @@
                 <button type="button" class="btn-primary-action" id="btnWelcomeStart">
                   <div class="btn-label-wrap">
                     <span class="material-symbols-outlined">favorite</span>
-                    <span>Start Check-In</span>
+                    <span>Start Well-Being Check</span>
                   </div>
                   <div class="btn-duration-badge">
                     <span>2–3 min</span>
@@ -125,7 +181,7 @@
                 <div class="welcome-secondary-row">
                   <button type="button" class="btn-secondary-action" id="btnWelcomeSelfHelp">
                     <span class="material-symbols-outlined" style="color: var(--secondary);">spa</span>
-                    <span>Explore Self-Help</span>
+                    <span>Explore Coping Tools</span>
                   </button>
 
                   <button type="button" class="btn-secondary-action" id="btnWelcomeCounseling">
@@ -135,10 +191,10 @@
                 </div>
               </div>
 
-              <!-- Privacy Reassurance -->
+              <!-- Privacy Reassurance Row -->
               <div class="privacy-notice-row">
-                <span class="material-symbols-outlined">lock</span>
-                <span>Your responses are private and used only to guide your support options.</span>
+                <span class="material-symbols-outlined">shield</span>
+                <span>100% Anonymous &amp; Private • No Roll Numbers or Logins Required • Zero Records Retained</span>
               </div>
             </div>
 
@@ -149,8 +205,8 @@
                   <span class="material-symbols-outlined">air</span>
                 </div>
                 <div>
-                  <div class="quick-breath-title">Need a moment to breathe?</div>
-                  <div class="quick-breath-sub">Tap to start a 30-second grounding cycle.</div>
+                  <div class="quick-breath-title">Need a moment to breathe right now?</div>
+                  <div class="quick-breath-sub">Tap to start an instant 30-second grounding cycle.</div>
                 </div>
               </div>
               <button type="button" class="btn-grounding-pause" id="btnQuickBreathPause">
@@ -160,20 +216,26 @@
             </div>
           </div>
 
-          <!-- Right Column (5 cols): Visual Sanctuary Card -->
+          <!-- Right Column (5 cols): Visual BVM Campus Sanctuary Card -->
           <div class="welcome-right-col">
             <div class="sanctuary-card">
               <div class="decor-circle decor-circle-1" aria-hidden="true"></div>
               <div class="decor-circle decor-circle-2" aria-hidden="true"></div>
 
               <div class="sanctuary-content-top">
-                <div class="sanctuary-glyph-box">
-                  <span class="material-symbols-outlined">eco</span>
+                <div class="sanctuary-college-header">
+                  <div class="sanctuary-glyph-box">
+                    <span class="material-symbols-outlined">eco</span>
+                  </div>
+                  <div class="sanctuary-college-tag">
+                    <span class="college-tag-label">CAMPUS SANCTUARY</span>
+                    <span class="college-tag-name">Birla Vishvakarma Mahavidyalaya</span>
+                  </div>
                 </div>
 
                 <h2 class="sanctuary-title">Your well-being matters.</h2>
                 <p class="sanctuary-desc">
-                  Take one small step at a time. You are not expected to figure everything out alone.
+                  Engineering demands immense focus and dedication. Remember that your mental peace and emotional health are just as vital as academic success.
                 </p>
 
                 <!-- BVM Campus Photo Frame with bvm_image.webp -->
@@ -181,9 +243,19 @@
                   <img src="bvm_image.webp" alt="Birla Vishvakarma Mahavidyalaya Engineering College Campus and Gardens" id="campusSanctuaryImg">
                   <div class="photo-overlay-tag">
                     <span class="material-symbols-outlined" style="font-size: 16px;">park</span>
-                    <span>Birla Vishvakarma Mahavidyalaya • Quiet Hours Active</span>
+                    <span>BVM Main Heritage Building &amp; Gardens • Vallabh Vidyanagar</span>
+                  </div>
+                  <div class="photo-badge-top">
+                    <span class="status-pulse-dot"></span>
+                    <span>Quiet Campus Hours Active</span>
                   </div>
                 </div>
+
+                <!-- Campus Backdrop Clarity Button inside Card -->
+                <button type="button" class="btn-campus-clarity-hero" id="btnCampusBackdropClarity" title="Toggle background photo visibility">
+                  <span class="material-symbols-outlined">visibility</span>
+                  <span id="campusClarityBtnText">Toggle Vivid Campus View</span>
+                </button>
               </div>
 
               <!-- Live Gentle Breath Pacer Indicator -->
@@ -210,6 +282,322 @@
             </div>
           </div>
         </div>
+
+        <!-- SECTION 2: 1-TAP QUICK CAMPUS MOOD PULSE (DIRECT INTERACTION ON LANDING PAGE) -->
+        <div class="landing-section quick-mood-section">
+          <div class="section-header-centered">
+            <div class="pill-badge">
+              <span class="material-symbols-outlined">psychology</span>
+              <span>1-TAP QUICK PULSE</span>
+            </div>
+            <h2 class="section-title">How are you feeling right now on campus?</h2>
+            <p class="section-sub">Tap any emotion to instantly tailor support and explore coping tools suited for today:</p>
+          </div>
+
+          <div class="quick-mood-grid">
+            <button type="button" class="quick-mood-card" data-mood="Happy">
+              <div class="quick-mood-icon-wrap sunny">
+                <span class="material-symbols-outlined">wb_sunny</span>
+              </div>
+              <div class="quick-mood-info">
+                <span class="quick-mood-name">Happy &amp; Energized</span>
+                <span class="quick-mood-sub">Content, inspired, or in flow</span>
+              </div>
+            </button>
+
+            <button type="button" class="quick-mood-card" data-mood="Okay">
+              <div class="quick-mood-icon-wrap calm">
+                <span class="material-symbols-outlined">sentiment_satisfied</span>
+              </div>
+              <div class="quick-mood-info">
+                <span class="quick-mood-name">Calm &amp; Steady</span>
+                <span class="quick-mood-sub">Doing fine, keeping balance</span>
+              </div>
+            </button>
+
+            <button type="button" class="quick-mood-card" data-mood="Neutral">
+              <div class="quick-mood-icon-wrap neutral">
+                <span class="material-symbols-outlined">horizontal_rule</span>
+              </div>
+              <div class="quick-mood-info">
+                <span class="quick-mood-name">Just Getting By</span>
+                <span class="quick-mood-sub">Routine, flat, or distracted</span>
+              </div>
+            </button>
+
+            <button type="button" class="quick-mood-card" data-mood="Stressed">
+              <div class="quick-mood-icon-wrap stressed">
+                <span class="material-symbols-outlined">grain</span>
+              </div>
+              <div class="quick-mood-info">
+                <span class="quick-mood-name">Stressed with Studies</span>
+                <span class="quick-mood-sub">Deadlines, lab submissions, backlog</span>
+              </div>
+            </button>
+
+            <button type="button" class="quick-mood-card" data-mood="Sad">
+              <div class="quick-mood-icon-wrap low">
+                <span class="material-symbols-outlined">water_drop</span>
+              </div>
+              <div class="quick-mood-info">
+                <span class="quick-mood-name">Emotionally Drained</span>
+                <span class="quick-mood-sub">Exhausted, low energy, homesick</span>
+              </div>
+            </button>
+
+            <button type="button" class="quick-mood-card" data-mood="Anxious">
+              <div class="quick-mood-icon-wrap anxious">
+                <span class="material-symbols-outlined">air</span>
+              </div>
+              <div class="quick-mood-info">
+                <span class="quick-mood-name">Anxious about Exams</span>
+                <span class="quick-mood-sub">Restless before mid-sems or vivas</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- SECTION 3: FOUR CORE PILLARS OF BVM STUDENT WELLNESS -->
+        <div class="landing-section pillars-section">
+          <div class="section-header-centered">
+            <div class="pill-badge">
+              <span class="material-symbols-outlined">spa</span>
+              <span>FOUR SUPPORT PATHWAYS</span>
+            </div>
+            <h2 class="section-title">Support Tailored for BVM Engineers</h2>
+            <p class="section-sub">Whether you want a quick self-reflection, a 3-minute breath break, or discrete counseling, choose the pathway that fits you:</p>
+          </div>
+
+          <div class="pillars-grid">
+            <!-- Pillar 1 -->
+            <div class="pillar-card" id="pillarCardCheckIn">
+              <div class="pillar-top-row">
+                <div class="pillar-icon-box blue">
+                  <span class="material-symbols-outlined">assignment_turned_in</span>
+                </div>
+                <span class="pillar-time-pill">2–3 Mins</span>
+              </div>
+              <h3 class="pillar-title">Adaptive Self Check-In</h3>
+              <p class="pillar-desc">
+                An 8-question pulse check calibrated for engineering students. Assesses coursework load, sleep patterns, exam stress, and hostel life.
+              </p>
+              <div class="pillar-action-link">
+                <span>Begin Check-In</span>
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </div>
+            </div>
+
+            <!-- Pillar 2 -->
+            <div class="pillar-card" id="pillarCardBreathing">
+              <div class="pillar-top-row">
+                <div class="pillar-icon-box green">
+                  <span class="material-symbols-outlined">air</span>
+                </div>
+                <span class="pillar-time-pill">Guided Audio</span>
+              </div>
+              <h3 class="pillar-title">4-4-4-4 Box Breathing</h3>
+              <p class="pillar-desc">
+                Calming autonomic nervous system pacer with soothing harmonic chimes. Excellent before stepping into vivas, practical labs, or examinations.
+              </p>
+              <div class="pillar-action-link">
+                <span>Start Breathing Pacer</span>
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </div>
+            </div>
+
+            <!-- Pillar 3 -->
+            <div class="pillar-card" id="pillarCardToolkits">
+              <div class="pillar-top-row">
+                <div class="pillar-icon-box slate">
+                  <span class="material-symbols-outlined">menu_book</span>
+                </div>
+                <span class="pillar-time-pill">Instant Guides</span>
+              </div>
+              <h3 class="pillar-title">BVM Study &amp; Sleep Toolkits</h3>
+              <p class="pillar-desc">
+                Practical, student-tested guides on beating burnout, managing late-night coding fatigue, exam sprint tactics, and hostel sleep hygiene.
+              </p>
+              <div class="pillar-action-link">
+                <span>Explore Toolkits</span>
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </div>
+            </div>
+
+            <!-- Pillar 4 -->
+            <div class="pillar-card" id="pillarCardCounseling">
+              <div class="pillar-top-row">
+                <div class="pillar-icon-box primary">
+                  <span class="material-symbols-outlined">support_agent</span>
+                </div>
+                <span class="pillar-time-pill">Room B-201</span>
+              </div>
+              <h3 class="pillar-title">BVM Counseling Cell</h3>
+              <p class="pillar-desc">
+                Connect confidentially with qualified campus counselors. Book an appointment or generate an anonymous visitor pass without roll number tracking.
+              </p>
+              <div class="pillar-action-link">
+                <span>Connect with Counselor</span>
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 4: BVM CAMPUS QUIET SANCTUARIES & RETREATS -->
+        <div class="landing-section sanctuaries-showcase-section">
+          <div class="sanctuaries-banner-card">
+            <div class="sanctuaries-banner-left">
+              <div class="pill-badge">
+                <span class="material-symbols-outlined">nature_people</span>
+                <span>CAMPUS RETREATS</span>
+              </div>
+              <h2 class="sanctuary-showcase-title">Peaceful Sanctuaries Across BVM Campus</h2>
+              <p class="sanctuary-showcase-sub">
+                Need a silent breather between intense 2-hour lectures or workshop labs? Our historic campus offers several peaceful spaces to decompress:
+              </p>
+
+              <div class="sanctuary-spots-list">
+                <div class="spot-item">
+                  <div class="spot-icon-wrap">
+                    <span class="material-symbols-outlined">park</span>
+                  </div>
+                  <div>
+                    <h4 class="spot-name">Main Building Front Lawn &amp; Heritage Garden</h4>
+                    <p class="spot-desc">Shaded benches under mature trees with fresh morning breeze, right in front of the iconic red brick building.</p>
+                  </div>
+                </div>
+
+                <div class="spot-item">
+                  <div class="spot-icon-wrap">
+                    <span class="material-symbols-outlined">local_library</span>
+                  </div>
+                  <div>
+                    <h4 class="spot-name">BVM Central Library — 2nd Floor Silent Zone</h4>
+                    <p class="spot-desc">Dedicated individual study desks with natural window daylight and zero noise distractions.</p>
+                  </div>
+                </div>
+
+                <div class="spot-item">
+                  <div class="spot-icon-wrap">
+                    <span class="material-symbols-outlined">temple_buddhist</span>
+                  </div>
+                  <div>
+                    <h4 class="spot-name">Auditorium Breeze Corridor</h4>
+                    <p class="spot-desc">Quiet stone walkways with pleasant shade and cool airflow, away from campus traffic.</p>
+                  </div>
+                </div>
+
+                <div class="spot-item">
+                  <div class="spot-icon-wrap">
+                    <span class="material-symbols-outlined">health_and_safety</span>
+                  </div>
+                  <div>
+                    <h4 class="spot-name">Student Counseling Room B-201 (Main Heritage Building)</h4>
+                    <p class="spot-desc">Comfortable, safe, and confidential consultation room with student welfare counselors.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sanctuaries-banner-right">
+              <div class="campus-heritage-callout">
+                <div class="callout-photo-wrap">
+                  <img src="bvm_image.webp" alt="Birla Vishvakarma Mahavidyalaya Campus" class="callout-photo">
+                  <div class="callout-overlay">
+                    <span class="material-symbols-outlined">account_balance</span>
+                    <span>Birla Vishvakarma Mahavidyalaya</span>
+                    <span class="callout-year">Estd. 1948 • Vallabh Vidyanagar</span>
+                  </div>
+                </div>
+                <div class="heritage-quote-box">
+                  <p class="heritage-quote">"Work is Worship — Engineering resilient minds, nurturing caring hearts."</p>
+                  <span class="heritage-author">— BVM Engineering College Motto</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 5: NORMALIZING ENGINEERING STRESS & COMMUNITY FACTS -->
+        <div class="landing-section reality-section">
+          <div class="reality-banner">
+            <div class="reality-content-col">
+              <div class="pill-badge" style="background: rgba(192, 232, 255, 0.45); color: var(--primary);">
+                <span class="material-symbols-outlined">diversity_3</span>
+                <span>YOU ARE NOT ALONE</span>
+              </div>
+              <h2 class="reality-title">Engineering is Rigorous. Seeking Calm is Wisdom.</h2>
+              <p class="reality-lead">
+                Across 10 engineering departments and 4,200+ students at BVM, intense academic challenges are common. You don't have to face them in silence:
+              </p>
+
+              <div class="reality-stats-row">
+                <div class="stat-box">
+                  <span class="stat-number">4,000+</span>
+                  <span class="stat-label">BVM Engineering scholars supported by campus wellness</span>
+                </div>
+                <div class="stat-box">
+                  <span class="stat-number">100%</span>
+                  <span class="stat-label">Confidential and anonymous — no record retained</span>
+                </div>
+                <div class="stat-box">
+                  <span class="stat-number">24/7</span>
+                  <span class="stat-label">National Tele-MANAS crisis and emotional support helpline</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 6: BVM CAMPUS EMERGENCY & NATIONAL HELPLINE STRIP -->
+        <div class="landing-section emergency-contacts-section">
+          <div class="contacts-grid">
+            <div class="contact-card urgent">
+              <div class="contact-card-icon">
+                <span class="material-symbols-outlined">emergency</span>
+              </div>
+              <div class="contact-card-details">
+                <span class="contact-type">24/7 National Mental Health Helpline</span>
+                <span class="contact-val">Tele-MANAS: 14416 / 1800-891-4416</span>
+                <span class="contact-note">Toll-free, 24/7 confidential psychological support</span>
+              </div>
+            </div>
+
+            <div class="contact-card">
+              <div class="contact-card-icon blue">
+                <span class="material-symbols-outlined">contact_phone</span>
+              </div>
+              <div class="contact-card-details">
+                <span class="contact-type">National KIRAN Mental Health Line</span>
+                <span class="contact-val">1800-599-0019</span>
+                <span class="contact-note">Ministry of Social Justice &amp; Empowerment helpline</span>
+              </div>
+            </div>
+
+            <div class="contact-card">
+              <div class="contact-card-icon green">
+                <span class="material-symbols-outlined">support_agent</span>
+              </div>
+              <div class="contact-card-details">
+                <span class="contact-type">BVM Counseling Cell (On-Campus)</span>
+                <span class="contact-val">Room B-201, Main Building (Ext. 201)</span>
+                <span class="contact-note">Direct in-person consultation • Mon to Sat (9 AM – 5 PM)</span>
+              </div>
+            </div>
+
+            <div class="contact-card">
+              <div class="contact-card-icon slate">
+                <span class="material-symbols-outlined">local_hospital</span>
+              </div>
+              <div class="contact-card-details">
+                <span class="contact-type">CVM Health &amp; First Aid Center</span>
+                <span class="contact-val">Campus Clinic, Vallabh Vidyanagar</span>
+                <span class="contact-note">Emergency medical attention and student primary care</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </section>
 
       <!-- ================================================================
@@ -906,29 +1294,53 @@
          PERSISTENT FOOTER STATUS BAR (Matches Design System)
          ==================================================================== -->
     <footer class="kiosk-footer" role="contentinfo">
-      <!-- Left: 24/7 Crisis Callout -->
-      <div class="footer-left">
+      <!-- Left: BVM Blue Logo & College Name -->
+      <div class="footer-brand">
+        <img src="bvm_logo.png" alt="BVM Engineering College Logo" class="footer-logo-img" width="42" height="42">
+        <div class="footer-brand-text">
+          <span class="footer-brand-title">Birla Vishvakarma Mahavidyalaya</span>
+          <span class="footer-brand-sub">Engineering College • Vallabh Vidyanagar</span>
+        </div>
+      </div>
+
+      <!-- Center: 24/7 Helpline & Crisis Callout -->
+      <div class="footer-center">
         <div class="crisis-callout">
           <span class="material-symbols-outlined">emergency</span>
-          <span>24/7 Campus Crisis Line: (800) 273-TALK</span>
+          <span>24/7 Tele-MANAS: <strong>14416</strong></span>
         </div>
         <span class="footer-bullet">•</span>
-        <span class="footer-sub-note">BVM Counseling Room B-201 • National Helpline: 1800-599-0019 (KIRAN)</span>
+        <span class="footer-sub-note">BVM Counseling Cell: Room B-201</span>
       </div>
 
-      <!-- Right: Accessibility & Quick Reset -->
+      <!-- Right: Anonymous Pill -->
       <div class="footer-right">
-        <button type="button" class="btn-footer-tool" id="btnFooterAccessibility">
-          <span class="material-symbols-outlined">accessibility_new</span>
-          <span>Accessibility</span>
-        </button>
-
-        <button type="button" class="btn-footer-tool" id="btnFooterReset">
-          <span class="material-symbols-outlined">restart_alt</span>
-          <span>Quick Exit / Reset</span>
-        </button>
+        <div class="confidential-pill">
+          <span class="material-symbols-outlined">shield</span>
+          <span>100% Anonymous</span>
+        </div>
       </div>
     </footer>
+
+    <!-- Mobile Floating Bottom Navigation Bar (High-End Native App Feel) -->
+    <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Mobile Navigation">
+      <button type="button" class="mobile-bottom-nav-btn active" data-target="screenWelcome" id="mNavBtnStart">
+        <span class="material-symbols-outlined">home</span>
+        <span>Start</span>
+      </button>
+      <button type="button" class="mobile-bottom-nav-btn" data-target="screenMoodCheck" id="mNavBtnCheckIn">
+        <span class="material-symbols-outlined">favorite</span>
+        <span>Check-In</span>
+      </button>
+      <button type="button" class="mobile-bottom-nav-btn" data-target="screenSelfHelp" id="mNavBtnTools">
+        <span class="material-symbols-outlined">spa</span>
+        <span>Coping</span>
+      </button>
+      <button type="button" class="mobile-bottom-nav-btn" data-target="screenCounseling" id="mNavBtnCounseling">
+        <span class="material-symbols-outlined">support_agent</span>
+        <span>Counselor</span>
+      </button>
+    </nav>
 
     <!-- ====================================================================
          INTERACTIVE MODALS & OVERLAYS

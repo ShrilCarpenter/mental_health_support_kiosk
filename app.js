@@ -193,6 +193,24 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Update mobile floating bottom nav active button
+    document.querySelectorAll('.mobile-bottom-nav-btn').forEach(btn => {
+      if (btn.dataset.target === screenId) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Update mobile slide drawer active links
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      if (link.dataset.target === screenId) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+
     state.currentScreen = screenId;
 
     // Screen specific logic
@@ -216,10 +234,77 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Mobile bottom navigation clicks
+  document.querySelectorAll('.mobile-bottom-nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.target;
+      if (target) showScreen(target);
+    });
+  });
+
   const brandHomeTrigger = document.getElementById('brandHomeTrigger');
   if (brandHomeTrigger) {
     brandHomeTrigger.addEventListener('click', () => showScreen('screenWelcome'));
   }
+
+  // Mobile Slide-Down Drawer Navigation
+  const mobileNavToggle = document.getElementById('mobileNavToggle');
+  const mobileNavClose = document.getElementById('mobileNavClose');
+  const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+  function openMobileDrawer() {
+    if (mobileNavDrawer) {
+      mobileNavDrawer.classList.add('open');
+      mobileNavDrawer.setAttribute('aria-hidden', 'false');
+      playTapSound();
+    }
+  }
+
+  function closeMobileDrawer() {
+    if (mobileNavDrawer) {
+      mobileNavDrawer.classList.remove('open');
+      mobileNavDrawer.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  if (mobileNavToggle) mobileNavToggle.addEventListener('click', openMobileDrawer);
+  if (mobileNavClose) mobileNavClose.addEventListener('click', closeMobileDrawer);
+
+  mobileNavLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const target = link.dataset.target;
+      if (target) {
+        showScreen(target);
+        closeMobileDrawer();
+      }
+    });
+  });
+
+  // Campus Backdrop Clarity Toggle
+  const btnToggleBackdrop = document.getElementById('btnToggleBackdrop');
+  const btnToggleBackdropMobile = document.getElementById('btnToggleBackdropMobile');
+  const btnCampusBackdropClarity = document.getElementById('btnCampusBackdropClarity');
+  const campusClarityBtnText = document.getElementById('campusClarityBtnText');
+  const backdropIcon = document.getElementById('backdropIcon');
+
+  let isVividBackdrop = false;
+  function toggleBackdropClarity() {
+    isVividBackdrop = !isVividBackdrop;
+    document.body.classList.toggle('vivid-backdrop', isVividBackdrop);
+    playChime(isVividBackdrop ? 659 : 528, 0.25);
+
+    if (campusClarityBtnText) {
+      campusClarityBtnText.textContent = isVividBackdrop ? 'Subtle Campus View' : 'Toggle Vivid Campus View';
+    }
+    if (backdropIcon) {
+      backdropIcon.textContent = isVividBackdrop ? 'panorama' : 'wallpaper';
+    }
+  }
+
+  if (btnToggleBackdrop) btnToggleBackdrop.addEventListener('click', toggleBackdropClarity);
+  if (btnToggleBackdropMobile) btnToggleBackdropMobile.addEventListener('click', toggleBackdropClarity);
+  if (btnCampusBackdropClarity) btnCampusBackdropClarity.addEventListener('click', toggleBackdropClarity);
 
   // ==========================================================================
   // 5. LIVE CAMPUS CLOCK & HEADER CONTROLS
@@ -302,6 +387,41 @@ document.addEventListener('DOMContentLoaded', () => {
   if (sanctuaryPulseTrigger) {
     sanctuaryPulseTrigger.addEventListener('click', () => openBreathingModal());
   }
+
+  // 1-Tap Quick Mood Pulse Cards on Landing Page
+  document.querySelectorAll('.quick-mood-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const mood = card.dataset.mood;
+      if (!mood) return;
+      playTapSound();
+      state.selectedMood = mood;
+
+      // Synchronize selection on Screen 2
+      document.querySelectorAll('.mood-card').forEach(c => {
+        if (c.dataset.mood === mood) {
+          c.classList.add('selected');
+          c.setAttribute('aria-checked', 'true');
+        } else {
+          c.classList.remove('selected');
+          c.setAttribute('aria-checked', 'false');
+        }
+      });
+
+      // Navigate to Check-in with the selected mood
+      showScreen('screenMoodCheck');
+    });
+  });
+
+  // Four Core Support Pillars on Landing Page
+  const pillarCardCheckIn = document.getElementById('pillarCardCheckIn');
+  const pillarCardBreathing = document.getElementById('pillarCardBreathing');
+  const pillarCardToolkits = document.getElementById('pillarCardToolkits');
+  const pillarCardCounseling = document.getElementById('pillarCardCounseling');
+
+  if (pillarCardCheckIn) pillarCardCheckIn.addEventListener('click', () => showScreen('screenMoodCheck'));
+  if (pillarCardBreathing) pillarCardBreathing.addEventListener('click', () => openBreathingModal());
+  if (pillarCardToolkits) pillarCardToolkits.addEventListener('click', () => showScreen('screenSelfHelp'));
+  if (pillarCardCounseling) pillarCardCounseling.addEventListener('click', () => showScreen('screenCounseling'));
 
   // Live breath text cycling on welcome card
   const liveBreathPhases = ['Inhale...', 'Hold...', 'Exhale...', 'Rest...'];
