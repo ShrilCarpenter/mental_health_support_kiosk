@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check-In – Campus Sanctuary | BVM</title>
+  <meta name="description" content="Anonymous mood and well-being check-in for BVM Engineering College students. No login required.">
+  <meta name="theme-color" content="#1e5b74">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=4">
+</head>
+<body>
+
+  <div class="kiosk-bg-layer" id="bgLayer" aria-hidden="true"></div>
+  <div class="ambient-glow ambient-glow-1" aria-hidden="true"></div>
+  <div class="ambient-glow ambient-glow-2" aria-hidden="true"></div>
+
+  <div class="kiosk-app" id="kioskApp">
+
+    <!-- ═══════════════════ HEADER ═══════════════════ -->
+    <header class="kiosk-header" role="banner">
+      <div class="header-left">
+        <a class="institution-brand" href="index.html" title="Return to Home">
+          <img src="bvm_logo.png" alt="BVM Engineering College Logo" class="header-logo-img" width="48" height="48">
+          <div class="institution-details">
+            <span class="institution-title">Campus Sanctuary</span>
+            <span class="institution-sub">BVM Engineering College</span>
+          </div>
+        </a>
+      </div>
+      <div class="header-center">
+        <nav class="header-nav" aria-label="Campus Sanctuary Navigation">
+          <a href="index.html" class="nav-pill-btn" id="navBtnStart">
+            <span class="material-symbols-outlined nav-pill-icon">home</span><span>Home</span>
+          </a>
+          <a href="checkin.html" class="nav-pill-btn active" id="navBtnCheckIn">
+            <span class="material-symbols-outlined nav-pill-icon">favorite</span><span>Check-In</span>
+          </a>
+          <a href="tools.html" class="nav-pill-btn" id="navBtnTools">
+            <span class="material-symbols-outlined nav-pill-icon">spa</span><span>Coping Tools</span>
+          </a>
+          <a href="counseling.html" class="nav-pill-btn" id="navBtnCounseling">
+            <span class="material-symbols-outlined nav-pill-icon">support_agent</span><span>Counselor</span>
+          </a>
+        </nav>
+      </div>
+      <div class="header-right">
+        <div class="clock-display" id="kioskClock">
+          <span class="material-symbols-outlined" style="font-size:16px">schedule</span>
+          <span id="clockTimeText">--:--</span>
+        </div>
+        <button type="button" class="btn-icon-control" id="btnToggleSound" aria-label="Toggle Sound">
+          <span class="material-symbols-outlined" id="soundIcon">volume_up</span>
+        </button>
+        <button type="button" class="btn-quick-exit-top" id="btnQuickExitTop" aria-label="Quick Exit">
+          <span class="material-symbols-outlined" style="font-size:18px">restart_alt</span>
+          <span>Quick Exit</span>
+        </button>
+        <button type="button" class="btn-icon-control mobile-only" id="mobileNavToggle" aria-label="Open Navigation">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-nav-drawer" id="mobileNavDrawer" aria-hidden="true">
+      <div class="mobile-nav-header">
+        <div class="institution-brand">
+          <img src="bvm_logo.png" alt="BVM Logo" class="header-logo-img" width="48" height="48">
+          <div class="institution-details">
+            <span class="institution-title">Campus Sanctuary</span>
+            <span class="institution-sub">BVM Engineering College</span>
+          </div>
+        </div>
+        <button type="button" class="btn-icon-control" id="mobileNavClose" aria-label="Close Navigation">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="mobile-nav-links">
+        <a href="index.html" class="mobile-nav-link"><span class="material-symbols-outlined">home</span><span>Home</span></a>
+        <a href="checkin.html" class="mobile-nav-link active"><span class="material-symbols-outlined">favorite</span><span>Check-In &amp; Mood</span></a>
+        <a href="tools.html" class="mobile-nav-link"><span class="material-symbols-outlined">spa</span><span>Coping Tools</span></a>
+        <a href="counseling.html" class="mobile-nav-link"><span class="material-symbols-outlined">support_agent</span><span>Campus Counseling</span></a>
+      </div>
+      <div class="mobile-nav-footer">
+        <div class="confidential-pill" style="justify-content:center;width:100%">
+          <span class="material-symbols-outlined">shield</span>
+          <span>100% Private &amp; Anonymous</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ MAIN ═══════════════════ -->
+    <main class="kiosk-main" id="mainContent" role="main">
+
+      <!-- ─── STEP 1: MOOD ─── -->
+      <section class="screen-container active" id="screenMoodCheck" aria-labelledby="moodHeading">
+        <div class="flow-card-wrapper">
+          <div class="flow-top-meta">
+            <div class="step-indicator-pill">
+              <span class="step-pulse-dot"></span>
+              <span>Step 1 of 3 • Self Check-In</span>
+            </div>
+            <div class="screen-inactivity-hint">
+              <span class="material-symbols-outlined">lock</span>
+              <span>Screen auto-clears after 60s of inactivity</span>
+            </div>
+          </div>
+
+          <div class="flow-title-block">
+            <h1 class="flow-main-title" id="moodHeading">How are you feeling?</h1>
+            <p class="flow-main-sub">Choose the words that feel closest to how you are right now.</p>
+          </div>
+
+          <div class="mood-grid" role="radiogroup" aria-label="Select your current mood">
+            <button type="button" class="mood-card" data-mood="Happy" role="radio" aria-checked="false">
+              <div class="mood-card-left">
+                <div class="mood-icon-wrap"><span class="material-symbols-outlined">wb_sunny</span></div>
+                <div class="mood-texts"><span class="mood-name">Happy</span><span class="mood-caption">Content &amp; energized</span></div>
+              </div>
+              <div class="mood-check-circle" aria-hidden="true"><span class="material-symbols-outlined" style="font-size:20px">check</span></div>
+            </button>
+            <button type="button" class="mood-card" data-mood="Okay" role="radio" aria-checked="false">
+              <div class="mood-card-left">
+                <div class="mood-icon-wrap"><span class="material-symbols-outlined">sentiment_satisfied</span></div>
+                <div class="mood-texts"><span class="mood-name">Okay</span><span class="mood-caption">Doing alright today</span></div>
+              </div>
+              <div class="mood-check-circle" aria-hidden="true"><span class="material-symbols-outlined" style="font-size:20px">check</span></div>
+            </button>
+            <button type="button" class="mood-card" data-mood="Neutral" role="radio" aria-checked="false">
+              <div class="mood-card-left">
+                <div class="mood-icon-wrap"><span class="material-symbols-outlined">horizontal_rule</span></div>
+                <div class="mood-texts"><span class="mood-name">Neutral</span><span class="mood-caption">Just getting by</span></div>
+              </div>
+              <div class="mood-check-circle" aria-hidden="true"><span class="material-symbols-outlined" style="font-size:20px">check</span></div>
+            </button>
+            <button type="button" class="mood-card" data-mood="Stressed" role="radio" aria-checked="false">
+              <div class="mood-card-left">
+                <div class="mood-icon-wrap"><span class="material-symbols-outlined">grain</span></div>
+                <div class="mood-texts"><span class="mood-name">Stressed</span><span class="mood-caption">Under pressure or tense</span></div>
+              </div>
+              <div class="mood-check-circle" aria-hidden="true"><span class="material-symbols-outlined" style="font-size:20px">check</span></div>
+            </button>
+            <button type="button" class="mood-card" data-mood="Sad" role="radio" aria-checked="false">
+              <div class="mood-card-left">
+                <div class="mood-icon-wrap"><span class="material-symbols-outlined">water_drop</span></div>
+                <div class="mood-texts"><span class="mood-name">Sad</span><span class="mood-caption">Down or low energy</span></div>
+              </div>
+              <div class="mood-check-circle" aria-hidden="true"><span class="material-symbols-outlined" style="font-size:20px">check</span></div>
+            </button>
+            <button type="button" class="mood-card" data-mood="Anxious" role="radio" aria-checked="false">
+              <div class="mood-card-left">
+                <div class="mood-icon-wrap"><span class="material-symbols-outlined">air</span></div>
+                <div class="mood-texts"><span class="mood-name">Anxious</span><span class="mood-caption">Restless or worried</span></div>
+              </div>
+              <div class="mood-check-circle" aria-hidden="true"><span class="material-symbols-outlined" style="font-size:20px">check</span></div>
+            </button>
+          </div>
+
+          <div class="influences-container">
+            <div class="influences-title-row">
+              <span class="material-symbols-outlined">psychology_alt</span>
+              <h2 class="influences-title">What is affecting you most?</h2>
+            </div>
+            <p class="influences-sub">Select one or more that apply today to tailor instant grounding recommendations.</p>
+            <div class="pills-cloud" id="influencesPillsCloud" role="group" aria-label="Select influences">
+              <button type="button" class="topic-pill" data-topic="Academic Work" aria-pressed="false"><span class="material-symbols-outlined pill-check">check</span><span>Academic Work</span></button>
+              <button type="button" class="topic-pill" data-topic="Exams" aria-pressed="false"><span class="material-symbols-outlined pill-check">check</span><span>Exams &amp; Mid-Sems</span></button>
+              <button type="button" class="topic-pill" data-topic="Sleep" aria-pressed="false"><span class="material-symbols-outlined pill-check">check</span><span>Sleep &amp; Fatigue</span></button>
+              <button type="button" class="topic-pill" data-topic="Relationships" aria-pressed="false"><span class="material-symbols-outlined pill-check">check</span><span>Relationships</span></button>
+              <button type="button" class="topic-pill" data-topic="Loneliness" aria-pressed="false"><span class="material-symbols-outlined pill-check">check</span><span>Hostel &amp; Loneliness</span></button>
+              <button type="button" class="topic-pill" data-topic="Placements" aria-pressed="false"><span class="material-symbols-outlined pill-check">check</span><span>Placements &amp; Career</span></button>
+              <button type="button" class="topic-pill" data-topic="Other" aria-pressed="false"><span class="material-symbols-outlined pill-check">check</span><span>Other</span></button>
+            </div>
+          </div>
+
+          <div class="flow-bottom-bar">
+            <a href="index.html" class="btn-flow-back">
+              <span class="material-symbols-outlined">arrow_back</span>
+              <span>Back to Home</span>
+            </a>
+            <button type="button" class="btn-flow-continue" id="btnMoodContinue">
+              <span>Continue</span>
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── STEP 2: ASSESSMENT ─── -->
+      <section class="screen-container" id="screenAssessment" aria-labelledby="assessmentHeading">
+        <div class="flow-card-wrapper">
+          <div class="flow-top-meta">
+            <div class="step-indicator-pill">
+              <span class="step-pulse-dot"></span>
+              <span id="assessmentStepBadge">Question 1 of 8</span>
+            </div>
+            <div class="screen-inactivity-hint">
+              <span class="material-symbols-outlined">lock</span>
+              <span>Anonymous &amp; Untracked</span>
+            </div>
+          </div>
+
+          <div class="flow-title-block">
+            <h1 class="flow-main-title" id="assessmentHeading">Quick well-being check</h1>
+            <p class="flow-main-sub">Answer based on how you have been feeling recently. Take your time — there are no right or wrong answers.</p>
+          </div>
+
+          <div class="assessment-card">
+            <div class="assessment-meta-header">
+              <div class="assessment-category-badge" id="questionCategoryBadge">
+                <span class="material-symbols-outlined">psychology_alt</span>
+                <span id="questionCategoryText">Academic Load &amp; Stress</span>
+              </div>
+              <div class="assessment-security-tag">
+                <span class="material-symbols-outlined" style="font-size:16px">lock</span>
+                <span>Zero Data Retained</span>
+              </div>
+            </div>
+            <div class="assessment-question-box">
+              <h2 class="assessment-question-title" id="questionPromptText">How often have you felt overwhelmed by your academic work?</h2>
+              <p class="assessment-question-hint" id="questionHintText">Think about course deadlines, study hours, or exam preparations over the past two weeks.</p>
+            </div>
+            <div class="options-radiogroup" id="assessmentOptionsGroup" role="radiogroup" aria-labelledby="questionPromptText">
+              <button type="button" class="option-row-card" data-value="0" role="radio" aria-checked="false">
+                <div class="option-row-left">
+                  <div class="option-icon-wrap"><span class="material-symbols-outlined">wb_sunny</span></div>
+                  <div class="option-details">
+                    <span class="option-label-text">Never</span>
+                    <span class="option-desc-text">Feeling calm, balanced, and fully in control</span>
+                  </div>
+                </div>
+                <div class="option-radio-dot"><div class="option-radio-inner"></div></div>
+              </button>
+              <button type="button" class="option-row-card" data-value="1" role="radio" aria-checked="false">
+                <div class="option-row-left">
+                  <div class="option-icon-wrap"><span class="material-symbols-outlined">filter_drama</span></div>
+                  <div class="option-details">
+                    <span class="option-label-text">Sometimes</span>
+                    <span class="option-desc-text">Manageable pressure during peak assignment dates</span>
+                  </div>
+                </div>
+                <div class="option-radio-dot"><div class="option-radio-inner"></div></div>
+              </button>
+              <button type="button" class="option-row-card" data-value="2" role="radio" aria-checked="false">
+                <div class="option-row-left">
+                  <div class="option-icon-wrap"><span class="material-symbols-outlined">thunderstorm</span></div>
+                  <div class="option-details">
+                    <span class="option-label-text">Often</span>
+                    <span class="option-desc-text">Persistent tension that affects daily rest or focus</span>
+                  </div>
+                </div>
+                <div class="option-radio-dot"><div class="option-radio-inner"></div></div>
+              </button>
+              <button type="button" class="option-row-card" data-value="3" role="radio" aria-checked="false">
+                <div class="option-row-left">
+                  <div class="option-icon-wrap"><span class="material-symbols-outlined">crisis_alert</span></div>
+                  <div class="option-details">
+                    <span class="option-label-text">Very Often</span>
+                    <span class="option-desc-text">Constant exhaustion, dread, or falling behind</span>
+                  </div>
+                </div>
+                <div class="option-radio-dot"><div class="option-radio-inner"></div></div>
+              </button>
+            </div>
+            <div class="assessment-progress-wrapper">
+              <div class="progress-labels-row">
+                <span id="progressStepCount">Question 1 of 8</span>
+                <span id="progressPercentText">12.5% Complete</span>
+              </div>
+              <div class="progress-track-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="8">
+                <div class="progress-fill-bar" id="assessmentProgressBarFill" style="width:12.5%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flow-bottom-bar">
+            <button type="button" class="btn-flow-back" id="btnAssessmentBack">
+              <span class="material-symbols-outlined">arrow_back</span>
+              <span>Back</span>
+            </button>
+            <div style="display:flex;gap:.75rem">
+              <button type="button" class="btn-flow-back" id="btnAssessmentSkip" style="font-size:.95rem">
+                <span>Skip Question</span>
+              </button>
+              <button type="button" class="btn-flow-continue" id="btnAssessmentNext">
+                <span id="assessmentNextBtnText">Next</span>
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── STEP 3: RESULTS ─── -->
+      <section class="screen-container" id="screenResults" aria-labelledby="resultsHeading">
+        <div class="flow-card-wrapper">
+          <div class="flow-title-block">
+            <div class="results-level-pill moderate" id="resultStatusBadge">
+              <span class="material-symbols-outlined" style="font-size:16px">spa</span>
+              <span id="resultBadgeText">Moderate Stress</span>
+            </div>
+            <h1 class="flow-main-title" id="resultsHeading">Your well-being check</h1>
+            <p class="flow-main-sub" id="resultMainSubtitle">Your responses suggest that you may be experiencing some stress at the moment.</p>
+          </div>
+
+          <div class="results-hero-card">
+            <div class="results-icon-glyph">
+              <span class="material-symbols-outlined" style="font-size:30px">spa</span>
+            </div>
+            <h2 class="results-reflection-title" id="resultReflectionTitle">You're carrying some pressure.</h2>
+            <p class="results-reflection-text" id="resultReflectionDesc">That can happen during demanding academic periods. A few small support steps may help you feel more balanced.</p>
+            <div class="results-disclaimer-note">
+              <span class="material-symbols-outlined">verified_user</span>
+              <p>Remember: this check-in is not a medical assessment or permanent record. It is completely anonymous and designed solely for your present self-care.</p>
+            </div>
+          </div>
+
+          <div class="results-actions-grid">
+            <a href="tools.html#breathing" class="rec-tool-card">
+              <div>
+                <div class="rec-card-top-row">
+                  <div class="rec-card-icon blue"><span class="material-symbols-outlined">air</span></div>
+                  <span class="rec-time-badge">2 mins • Guided Audio</span>
+                </div>
+                <h3 class="rec-title">Breathing Exercise</h3>
+                <p class="rec-desc">Take a few minutes to slow your breathing and reset your nervous system.</p>
+              </div>
+              <div class="rec-card-action-link">
+                <span>Start Exercise</span>
+                <span class="material-symbols-outlined" style="font-size:20px">arrow_forward</span>
+              </div>
+            </a>
+            <a href="tools.html#grounding" class="rec-tool-card">
+              <div>
+                <div class="rec-card-top-row">
+                  <div class="rec-card-icon green"><span class="material-symbols-outlined">self_improvement</span></div>
+                  <span class="rec-time-badge">3 mins • Relaxation</span>
+                </div>
+                <h3 class="rec-title">Relaxation Activity</h3>
+                <p class="rec-desc">Try a gentle physical sequence to release tension in your shoulders and jaw.</p>
+              </div>
+              <div class="rec-card-action-link">
+                <span>Begin Activity</span>
+                <span class="material-symbols-outlined" style="font-size:20px">arrow_forward</span>
+              </div>
+            </a>
+            <a href="tools.html" class="rec-tool-card">
+              <div>
+                <div class="rec-card-top-row">
+                  <div class="rec-card-icon slate"><span class="material-symbols-outlined">menu_book</span></div>
+                  <span class="rec-time-badge">Toolkits &amp; Guides</span>
+                </div>
+                <h3 class="rec-title">Self-Help Resources</h3>
+                <p class="rec-desc">Explore practical, student-tested guides for sleep, exams, and workload.</p>
+              </div>
+              <div class="rec-card-action-link">
+                <span>Explore Resources</span>
+                <span class="material-symbols-outlined" style="font-size:20px">arrow_forward</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="flow-bottom-bar" style="justify-content:center;gap:1rem">
+            <a href="index.html" class="btn-flow-back">
+              <span class="material-symbols-outlined">home</span>
+              <span>Back to Home</span>
+            </a>
+            <a href="tools.html" class="btn-flow-continue" style="background:var(--surface-container-lowest);color:var(--primary);border:1.5px solid var(--border-card)">
+              <span class="material-symbols-outlined">spa</span>
+              <span>Explore Self-Help</span>
+            </a>
+            <a href="counseling.html" class="btn-flow-continue">
+              <span class="material-symbols-outlined">support_agent</span>
+              <span>Talk to a Counselor</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ═══════════════════ FOOTER ═══════════════════ -->
+    <footer class="kiosk-footer" role="contentinfo">
+      <div class="footer-left">
+        <div class="crisis-callout">
+          <span class="material-symbols-outlined">emergency</span>
+          <span>24/7 Tele-MANAS: <strong>14416</strong></span>
+        </div>
+        <span class="footer-bullet">•</span>
+        <span class="footer-sub-note">BVM Counseling Room B-201 • KIRAN: 1800-599-0019</span>
+      </div>
+      <div class="footer-right">
+        <div class="confidential-pill">
+          <span class="material-symbols-outlined">shield</span>
+          <span>100% Anonymous</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Mobile Navigation">
+      <a href="index.html" class="mobile-bottom-nav-btn"><span class="material-symbols-outlined">home</span><span>Home</span></a>
+      <a href="checkin.html" class="mobile-bottom-nav-btn active"><span class="material-symbols-outlined">favorite</span><span>Check-In</span></a>
+      <a href="tools.html" class="mobile-bottom-nav-btn"><span class="material-symbols-outlined">spa</span><span>Coping</span></a>
+      <a href="counseling.html" class="mobile-bottom-nav-btn"><span class="material-symbols-outlined">support_agent</span><span>Counselor</span></a>
+    </nav>
+
+    <!-- Inactivity Modal -->
+    <div class="modal-overlay" id="modalInactivity" role="dialog" aria-modal="true" aria-labelledby="modalInactivityTitle">
+      <div class="modal-sheet" style="max-width:480px">
+        <div class="inactivity-modal-content">
+          <div class="inactivity-timer-circle" id="inactivityCountdownText">15</div>
+          <h2 class="modal-title" id="modalInactivityTitle" style="font-size:1.6rem;margin-bottom:.5rem">Are you still there?</h2>
+          <p style="font-family:var(--font-body);font-size:1.05rem;color:var(--on-surface-variant);margin-bottom:2rem">To safeguard your personal privacy, this kiosk will automatically clear in 15 seconds.</p>
+          <div style="display:flex;gap:1rem;justify-content:center">
+            <button type="button" class="btn-flow-back" id="btnInactivityExitNow" style="background:var(--surface-container);color:var(--error)"><span>Exit Now</span></button>
+            <button type="button" class="btn-flow-continue" id="btnInactivityContinue"><span>I'm Still Here</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accessibility Modal -->
+    <div class="modal-overlay" id="modalAccessibility" role="dialog" aria-modal="true" aria-labelledby="modalAccessTitle">
+      <div class="modal-sheet" style="max-width:500px">
+        <div class="modal-header-bar">
+          <div class="modal-title-wrap">
+            <div class="modal-title-icon"><span class="material-symbols-outlined">accessibility_new</span></div>
+            <h2 class="modal-title" id="modalAccessTitle">Accessibility Options</h2>
+          </div>
+          <button type="button" class="btn-modal-close" id="btnCloseAccess" aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+        </div>
+        <div class="modal-body-content">
+          <div style="display:flex;flex-direction:column;gap:1.25rem">
+            <div>
+              <label style="font-family:var(--font-label);font-weight:600;display:block;margin-bottom:.5rem">Text Size</label>
+              <div style="display:flex;gap:.75rem">
+                <button type="button" class="topic-pill selected" id="btnTextStandard">Standard (A)</button>
+                <button type="button" class="topic-pill" id="btnTextLarge">Large (A+)</button>
+              </div>
+            </div>
+            <div>
+              <label style="font-family:var(--font-label);font-weight:600;display:block;margin-bottom:.5rem">Calming Audio &amp; Chimes</label>
+              <div style="display:flex;gap:.75rem">
+                <button type="button" class="topic-pill selected" id="btnAudioOn">Enabled</button>
+                <button type="button" class="topic-pill" id="btnAudioOff">Muted</button>
+              </div>
+            </div>
+            <div>
+              <label style="font-family:var(--font-label);font-weight:600;display:block;margin-bottom:.5rem">Contrast Mode</label>
+              <div style="display:flex;gap:.75rem">
+                <button type="button" class="topic-pill selected" id="btnContrastNormal">Default Calm</button>
+                <button type="button" class="topic-pill" id="btnContrastHigh">High Contrast</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer-bar">
+          <button type="button" class="btn-flow-continue" id="btnDoneAccess" style="width:100%;justify-content:center"><span>Apply &amp; Return</span></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="shared.js"></script>
+  <script src="checkin.js"></script>
+</body>
+</html>

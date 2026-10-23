@@ -364,64 +364,73 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnFooterReset) btnFooterReset.addEventListener('click', fullSessionReset);
 
   // ==========================================================================
-  // 6. SCREEN 1: WELCOME ACTIONS & GENTLE BREATH PULSE
+  // 6. SCREEN 1: WELCOME & LANDING PAGE ACTIONS
   // ==========================================================================
   const btnWelcomeStart = document.getElementById('btnWelcomeStart');
-  const btnWelcomeSelfHelp = document.getElementById('btnWelcomeSelfHelp');
-  const btnWelcomeCounseling = document.getElementById('btnWelcomeCounseling');
-  const btnQuickBreathPause = document.getElementById('btnQuickBreathPause');
+  const btnWelcomeExplore = document.getElementById('btnWelcomeExplore');
   const sanctuaryPulseTrigger = document.getElementById('sanctuaryPulseTrigger');
 
+  // Hero Actions
   if (btnWelcomeStart) {
     btnWelcomeStart.addEventListener('click', () => showScreen('screenMoodCheck'));
   }
-  if (btnWelcomeSelfHelp) {
-    btnWelcomeSelfHelp.addEventListener('click', () => showScreen('screenSelfHelp'));
-  }
-  if (btnWelcomeCounseling) {
-    btnWelcomeCounseling.addEventListener('click', () => showScreen('screenCounseling'));
-  }
-  if (btnQuickBreathPause) {
-    btnQuickBreathPause.addEventListener('click', () => openBreathingModal());
+  if (btnWelcomeExplore) {
+    btnWelcomeExplore.addEventListener('click', (e) => {
+      e.preventDefault();
+      playTapSound();
+      const target = document.getElementById('exploreSupportSection');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
   }
   if (sanctuaryPulseTrigger) {
     sanctuaryPulseTrigger.addEventListener('click', () => openBreathingModal());
+    sanctuaryPulseTrigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openBreathingModal();
+      }
+    });
   }
 
-  // 1-Tap Quick Mood Pulse Cards on Landing Page
-  document.querySelectorAll('.quick-mood-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const mood = card.dataset.mood;
-      if (!mood) return;
-      playTapSound();
-      state.selectedMood = mood;
+  // Section 2: How It Works Actions
+  const howStep1Btn = document.getElementById('howStep1Btn');
+  const howStep2Btn = document.getElementById('howStep2Btn');
+  const howStep3Btn = document.getElementById('howStep3Btn');
+  const howStepCard1 = document.getElementById('howStepCard1');
+  const howStepCard2 = document.getElementById('howStepCard2');
+  const howStepCard3 = document.getElementById('howStepCard3');
 
-      // Synchronize selection on Screen 2
-      document.querySelectorAll('.mood-card').forEach(c => {
-        if (c.dataset.mood === mood) {
-          c.classList.add('selected');
-          c.setAttribute('aria-checked', 'true');
-        } else {
-          c.classList.remove('selected');
-          c.setAttribute('aria-checked', 'false');
-        }
-      });
+  if (howStep1Btn) howStep1Btn.addEventListener('click', (e) => { e.stopPropagation(); showScreen('screenMoodCheck'); });
+  if (howStep2Btn) howStep2Btn.addEventListener('click', (e) => { e.stopPropagation(); showScreen('screenSelfHelp'); });
+  if (howStep3Btn) howStep3Btn.addEventListener('click', (e) => { e.stopPropagation(); showScreen('screenCounseling'); });
 
-      // Navigate to Check-in with the selected mood
-      showScreen('screenMoodCheck');
-    });
-  });
+  if (howStepCard1) howStepCard1.addEventListener('click', () => showScreen('screenMoodCheck'));
+  if (howStepCard2) howStepCard2.addEventListener('click', () => showScreen('screenSelfHelp'));
+  if (howStepCard3) howStepCard3.addEventListener('click', () => showScreen('screenCounseling'));
 
-  // Four Core Support Pillars on Landing Page
-  const pillarCardCheckIn = document.getElementById('pillarCardCheckIn');
-  const pillarCardBreathing = document.getElementById('pillarCardBreathing');
-  const pillarCardToolkits = document.getElementById('pillarCardToolkits');
-  const pillarCardCounseling = document.getElementById('pillarCardCounseling');
+  // Section 3: Explore Support Actions
+  const exploreAssessmentBtn = document.getElementById('exploreAssessmentBtn');
+  const exploreSelfCareBtn = document.getElementById('exploreSelfCareBtn');
+  const exploreCounselingBtn = document.getElementById('exploreCounselingBtn');
+  const catCardAssessment = document.getElementById('catCardAssessment');
+  const catCardSelfCare = document.getElementById('catCardSelfCare');
+  const catCardCounseling = document.getElementById('catCardCounseling');
 
-  if (pillarCardCheckIn) pillarCardCheckIn.addEventListener('click', () => showScreen('screenMoodCheck'));
-  if (pillarCardBreathing) pillarCardBreathing.addEventListener('click', () => openBreathingModal());
-  if (pillarCardToolkits) pillarCardToolkits.addEventListener('click', () => showScreen('screenSelfHelp'));
-  if (pillarCardCounseling) pillarCardCounseling.addEventListener('click', () => showScreen('screenCounseling'));
+  if (exploreAssessmentBtn) exploreAssessmentBtn.addEventListener('click', (e) => { e.stopPropagation(); showScreen('screenMoodCheck'); });
+  if (exploreSelfCareBtn) exploreSelfCareBtn.addEventListener('click', (e) => { e.stopPropagation(); showScreen('screenSelfHelp'); });
+  if (exploreCounselingBtn) exploreCounselingBtn.addEventListener('click', (e) => { e.stopPropagation(); showScreen('screenCounseling'); });
+
+  if (catCardAssessment) catCardAssessment.addEventListener('click', () => showScreen('screenMoodCheck'));
+  if (catCardSelfCare) catCardSelfCare.addEventListener('click', () => showScreen('screenSelfHelp'));
+  if (catCardCounseling) catCardCounseling.addEventListener('click', () => showScreen('screenCounseling'));
+
+  // Section 4: University Support CTA Action
+  const btnSupportCtaCounseling = document.getElementById('btnSupportCtaCounseling');
+  if (btnSupportCtaCounseling) {
+    btnSupportCtaCounseling.addEventListener('click', () => showScreen('screenCounseling'));
+  }
 
   // Live breath text cycling on welcome card
   const liveBreathPhases = ['Inhale...', 'Hold...', 'Exhale...', 'Rest...'];
