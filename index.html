@@ -1,464 +1,1365 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Campus Sanctuary – BVM Student Mental Health Support</title>
-  <meta name="description" content="BVM Engineering College's confidential, anonymous campus kiosk for engineering students to check well-being, access self-help tools, and connect with the BVM Counseling Cell.">
-  <meta name="theme-color" content="#1e5b74">
+  <meta name="description" content="BVM Engineering College's confidential, anonymous mental wellness kiosk. Check your well-being, access self-help tools, and connect with counselors — 100% private.">
+  <meta name="theme-color" content="#0d1f2d">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=4">
+
+  <style>
+    /* ── Reset & Base ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a1628;
+      color: #e8f4f8;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Canvas / animated gradient background ─────────────────── */
+    .lp-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 15%, rgba(30,91,116,0.55) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 80%, rgba(47,105,84,0.40) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 40% at 50% 50%, rgba(10,30,50,0.8) 0%, transparent 80%),
+        linear-gradient(160deg, #060f1a 0%, #0d2035 45%, #091a12 100%);
+      pointer-events: none;
+    }
+    .lp-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(30,91,116,0.12) 0%, transparent 40%),
+        radial-gradient(circle at 75% 65%, rgba(47,105,84,0.10) 0%, transparent 35%);
+      animation: bgPulse 8s ease-in-out infinite alternate;
+    }
+    @keyframes bgPulse {
+      from { opacity: 0.6; }
+      to   { opacity: 1; }
+    }
+
+    /* Floating orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(70px);
+      pointer-events: none;
+      z-index: 0;
+      animation: orbFloat 12s ease-in-out infinite;
+    }
+    .orb-1 { width: 500px; height: 500px; background: rgba(30,91,116,0.18); top: -100px; left: -120px; animation-delay: 0s; }
+    .orb-2 { width: 380px; height: 380px; background: rgba(47,105,84,0.15); bottom: -80px; right: -80px; animation-delay: -4s; }
+    .orb-3 { width: 260px; height: 260px; background: rgba(30,91,116,0.12); top: 40%; left: 60%; animation-delay: -8s; }
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33%  { transform: translate(30px, -40px) scale(1.05); }
+      66%  { transform: translate(-20px, 30px) scale(0.97); }
+    }
+
+    /* ── Wrapper ───────────────────────────────────────────────── */
+    .lp-wrap { position: relative; z-index: 1; }
+
+    /* ── NAV ───────────────────────────────────────────────────── */
+    .lp-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(10, 22, 40, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+    .nav-brand img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(30,91,116,0.5));
+    }
+    .nav-brand-text .brand-name {
+      display: block;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #e8f4f8;
+      line-height: 1.1;
+    }
+    .nav-brand-text .brand-sub {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.04em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.45rem 1rem;
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .nav-link:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .nav-link .material-symbols-outlined { font-size: 17px; }
+    .nav-link.active { color: #7dd5b8; background: rgba(47,105,84,0.2); font-weight: 600; }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.4rem;
+      background: linear-gradient(135deg, #1e5b74, #2f6954);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(30,91,116,0.4);
+    }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(30,91,116,0.5); }
+    .nav-cta .material-symbols-outlined { font-size: 17px; }
+    .nav-mobile-toggle {
+      display: none;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #e8f4f8;
+      border-radius: 8px;
+      padding: 0.4rem 0.5rem;
+      cursor: pointer;
+    }
+    .nav-mobile-toggle .material-symbols-outlined { font-size: 22px; display: block; }
+
+    /* ── HERO ──────────────────────────────────────────────────── */
+    .lp-hero {
+      min-height: calc(100vh - 72px);
+      display: flex;
+      align-items: center;
+      padding: 5rem 3rem 4rem;
+      gap: 4rem;
+    }
+    .hero-left { flex: 1; max-width: 620px; }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: rgba(30,91,116,0.25);
+      border: 1px solid rgba(30,91,116,0.5);
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #7dd5f5;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+      animation: fadeSlideUp 0.6s ease both;
+    }
+    .hero-eyebrow .material-symbols-outlined { font-size: 15px; }
+    .hero-h1 {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.8rem, 5vw, 4.4rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      animation: fadeSlideUp 0.6s ease 0.1s both;
+    }
+    .hero-h1 .accent {
+      background: linear-gradient(120deg, #7dd5f5 0%, #7dd5b8 60%, #a8e6cf 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-lead {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 2.5rem;
+      max-width: 520px;
+      animation: fadeSlideUp 0.6s ease 0.2s both;
+    }
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      animation: fadeSlideUp 0.6s ease 0.3s both;
+    }
+    .btn-hero-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.95rem 2rem;
+      background: linear-gradient(135deg, #1e5b74 0%, #2f6954 100%);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: all 0.25s ease;
+      box-shadow: 0 6px 25px rgba(30,91,116,0.45), 0 0 0 0 rgba(125,213,245,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-hero-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .btn-hero-primary:hover::before { opacity: 1; }
+    .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(30,91,116,0.55); }
+    .btn-hero-primary .material-symbols-outlined { font-size: 20px; }
+
+    .btn-hero-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.95rem 1.8rem;
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.14);
+      transition: all 0.25s ease;
+      backdrop-filter: blur(8px);
+    }
+    .btn-hero-secondary:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); transform: translateY(-2px); color: #fff; }
+    .btn-hero-secondary .material-symbols-outlined { font-size: 20px; }
+
+    .hero-trust {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      animation: fadeSlideUp 0.6s ease 0.4s both;
+    }
+    .trust-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+    }
+    .trust-badge .material-symbols-outlined { font-size: 16px; color: #7dd5b8; }
+
+    /* Hero Right — Visual Card Stack */
+    .hero-right {
+      flex: 0 0 auto;
+      width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      animation: fadeSlideUp 0.7s ease 0.2s both;
+    }
+    .hero-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 1.5rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .hero-card:hover { transform: translateY(-4px); border-color: rgba(125,213,245,0.25); }
+    .hero-card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.85rem;
+    }
+    .hero-card-icon.blue { background: rgba(30,91,116,0.35); }
+    .hero-card-icon.green { background: rgba(47,105,84,0.35); }
+    .hero-card-icon.teal { background: rgba(125,213,245,0.15); }
+    .hero-card-icon .material-symbols-outlined { font-size: 22px; color: #7dd5f5; }
+    .hero-card-icon.green .material-symbols-outlined { color: #7dd5b8; }
+    .hero-card h3 {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 0.35rem;
+    }
+    .hero-card p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+    .hero-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #7dd5f5;
+      text-decoration: none;
+      transition: gap 0.2s;
+    }
+    .hero-card-link .material-symbols-outlined { font-size: 16px; }
+    .hero-card-link:hover { gap: 0.5rem; }
+    .hero-card-row {
+      display: flex;
+      gap: 1rem;
+    }
+    .hero-card-row .hero-card { flex: 1; }
+
+    /* Breathing indicator on card */
+    .breath-pulse {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 0.85rem;
+    }
+    .breath-ring {
+      position: relative;
+      width: 32px;
+      height: 32px;
+    }
+    .breath-ring::before, .breath-ring::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(125,213,245,0.4);
+      animation: breathRing 3.5s ease-in-out infinite;
+    }
+    .breath-ring::after { animation-delay: 1.75s; }
+    .breath-dot {
+      position: absolute;
+      inset: 8px;
+      background: #7dd5f5;
+      border-radius: 50%;
+    }
+    @keyframes breathRing {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50%  { transform: scale(1.6); opacity: 0; }
+    }
+    .breath-text { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+    .breath-phase { font-size: 0.8rem; font-weight: 600; color: #7dd5f5; }
+
+    /* ── STAT STRIP ────────────────────────────────────────────── */
+    .lp-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.06);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .stat-item {
+      padding: 2rem 1.5rem;
+      text-align: center;
+      background: rgba(10,22,40,0.6);
+      backdrop-filter: blur(10px);
+    }
+    .stat-num {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 900;
+      font-size: 2.2rem;
+      background: linear-gradient(120deg, #7dd5f5, #7dd5b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .stat-label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── FEATURES SECTION ──────────────────────────────────────── */
+    .lp-section {
+      padding: 6rem 3rem;
+    }
+    .section-eyebrow {
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #7dd5b8;
+      margin-bottom: 1.25rem;
+    }
+    .section-eyebrow .material-symbols-outlined { font-size: 15px; }
+    .section-title {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      color: #fff;
+      text-align: center;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      text-align: center;
+      color: rgba(255,255,255,0.5);
+      font-size: 1.05rem;
+      line-height: 1.65;
+      max-width: 560px;
+      margin: 0 auto 4rem;
+    }
+
+    /* Feature Cards Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .feat-card {
+      position: relative;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 2.25rem 2rem;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+    }
+    .feat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+    }
+    .feat-card:hover { border-color: rgba(125,213,245,0.2); transform: translateY(-6px); background: rgba(255,255,255,0.07); }
+    .feat-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top left, rgba(30,91,116,0.12) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .feat-card:hover::after { opacity: 1; }
+    .feat-card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      align-self: flex-start;
+    }
+    .feat-card-tag.blue { background: rgba(30,91,116,0.3); color: #7dd5f5; border: 1px solid rgba(30,91,116,0.5); }
+    .feat-card-tag.green { background: rgba(47,105,84,0.3); color: #7dd5b8; border: 1px solid rgba(47,105,84,0.5); }
+    .feat-card-tag.teal { background: rgba(125,213,245,0.12); color: #a8e6cf; border: 1px solid rgba(125,213,245,0.2); }
+    .feat-card-tag .material-symbols-outlined { font-size: 13px; }
+    .feat-big-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .feat-big-icon.blue { background: linear-gradient(135deg, rgba(30,91,116,0.5), rgba(30,91,116,0.2)); border: 1px solid rgba(30,91,116,0.4); }
+    .feat-big-icon.green { background: linear-gradient(135deg, rgba(47,105,84,0.5), rgba(47,105,84,0.2)); border: 1px solid rgba(47,105,84,0.4); }
+    .feat-big-icon.teal { background: linear-gradient(135deg, rgba(125,213,245,0.2), rgba(125,213,245,0.06)); border: 1px solid rgba(125,213,245,0.25); }
+    .feat-big-icon .material-symbols-outlined { font-size: 28px; color: #7dd5f5; }
+    .feat-big-icon.green .material-symbols-outlined { color: #7dd5b8; }
+    .feat-big-icon.teal .material-symbols-outlined { color: #a8e6cf; }
+    .feat-card h3 {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+    .feat-card p {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.65;
+      flex: 1;
+      margin-bottom: 1.5rem;
+    }
+    .feat-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+    }
+    .feat-bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.83rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.4;
+    }
+    .feat-bullets li .material-symbols-outlined { font-size: 15px; color: #7dd5b8; flex-shrink: 0; margin-top: 1px; }
+    .feat-card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.7rem 1.4rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      align-self: flex-start;
+      text-decoration: none;
+      margin-top: auto;
+    }
+    .feat-card-btn.blue { background: rgba(30,91,116,0.35); color: #7dd5f5; border: 1px solid rgba(30,91,116,0.4); }
+    .feat-card-btn.blue:hover { background: rgba(30,91,116,0.55); transform: translateX(3px); }
+    .feat-card-btn.green { background: rgba(47,105,84,0.35); color: #7dd5b8; border: 1px solid rgba(47,105,84,0.4); }
+    .feat-card-btn.green:hover { background: rgba(47,105,84,0.55); transform: translateX(3px); }
+    .feat-card-btn.teal { background: rgba(125,213,245,0.12); color: #a8e6cf; border: 1px solid rgba(125,213,245,0.2); }
+    .feat-card-btn.teal:hover { background: rgba(125,213,245,0.22); transform: translateX(3px); }
+    .feat-card-btn .material-symbols-outlined { font-size: 16px; }
+
+    /* ── HOW IT WORKS ──────────────────────────────────────────── */
+    .lp-how {
+      padding: 6rem 3rem;
+      background: rgba(255,255,255,0.02);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .steps-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .steps-row::before {
+      content: '';
+      position: absolute;
+      top: 2.75rem;
+      left: calc(100% / 6);
+      right: calc(100% / 6);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(125,213,245,0.3), rgba(125,213,245,0.3), transparent);
+      z-index: 0;
+    }
+    .step-item {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .step-num-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .step-num-badge::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(30,91,116,0.5), rgba(47,105,84,0.5));
+      z-index: -1;
+    }
+    .step-num-badge .num-inner {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1e5b74, #2f6954);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 900;
+      font-size: 1.4rem;
+      color: #fff;
+    }
+    .step-item a { text-decoration: none; }
+    .step-item h3 {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: #fff;
+      margin-bottom: 0.6rem;
+    }
+    .step-item p {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.48);
+      line-height: 1.6;
+      max-width: 240px;
+      margin: 0 auto 1rem;
+    }
+    .step-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #7dd5b8;
+      text-decoration: none;
+      transition: gap 0.2s;
+    }
+    .step-link .material-symbols-outlined { font-size: 15px; }
+    .step-link:hover { gap: 0.5rem; }
+
+    /* ── EMERGENCY BANNER ──────────────────────────────────────── */
+    .lp-emergency {
+      padding: 2.5rem 3rem;
+      background: linear-gradient(135deg, rgba(186,26,26,0.12), rgba(186,26,26,0.06));
+      border-top: 1px solid rgba(186,26,26,0.2);
+      border-bottom: 1px solid rgba(186,26,26,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .emergency-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .emergency-icon-wrap {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: rgba(186,26,26,0.2);
+      border: 1px solid rgba(186,26,26,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      animation: emergencyPulse 2s ease-in-out infinite;
+    }
+    .emergency-icon-wrap .material-symbols-outlined { font-size: 24px; color: #f47c7c; }
+    @keyframes emergencyPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(186,26,26,0.3); }
+      50% { box-shadow: 0 0 0 8px rgba(186,26,26,0); }
+    }
+    .emergency-text h4 {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #f47c7c;
+      margin-bottom: 0.2rem;
+    }
+    .emergency-text p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .emergency-numbers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .emergency-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1.1rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+    }
+    .emergency-pill strong { color: #f47c7c; font-weight: 800; }
+    .emergency-pill .material-symbols-outlined { font-size: 16px; color: #f47c7c; }
+
+    /* ── CTA BANNER ────────────────────────────────────────────── */
+    .lp-cta {
+      padding: 7rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .lp-cta::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(30,91,116,0.18) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .lp-cta h2 {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      color: #fff;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+    .lp-cta p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.5);
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.65;
+      position: relative;
+    }
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      position: relative;
+    }
+    .btn-cta-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      background: linear-gradient(135deg, #1e5b74, #2f6954);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      transition: all 0.25s ease;
+      box-shadow: 0 6px 30px rgba(30,91,116,0.45);
+    }
+    .btn-cta-main:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(30,91,116,0.55); }
+    .btn-cta-main .material-symbols-outlined { font-size: 20px; }
+    .btn-cta-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 2rem;
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.14);
+      transition: all 0.25s ease;
+    }
+    .btn-cta-ghost:hover { background: rgba(255,255,255,0.11); transform: translateY(-3px); }
+    .btn-cta-ghost .material-symbols-outlined { font-size: 20px; }
+
+    /* ── FOOTER ────────────────────────────────────────────────── */
+    .lp-footer {
+      background: rgba(0,0,0,0.3);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 1.5rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-left-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .footer-crisis {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+    }
+    .footer-crisis .material-symbols-outlined { font-size: 16px; color: #f47c7c; }
+    .footer-crisis strong { color: rgba(255,255,255,0.8); }
+    .footer-sep { color: rgba(255,255,255,0.15); }
+    .footer-note { font-size: 0.75rem; color: rgba(255,255,255,0.3); }
+    .footer-anon {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.9rem;
+      background: rgba(47,105,84,0.2);
+      border: 1px solid rgba(47,105,84,0.3);
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #7dd5b8;
+    }
+    .footer-anon .material-symbols-outlined { font-size: 14px; }
+
+    /* ── Animations ────────────────────────────────────────────── */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .lp-hero { flex-direction: column; padding: 4rem 2rem 3rem; gap: 3rem; }
+      .hero-right { width: 100%; max-width: 500px; margin: 0 auto; flex-direction: row; flex-wrap: wrap; }
+      .hero-right .hero-card { flex: 1; min-width: 200px; }
+      .hero-card-row { flex-direction: column; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .steps-row::before { display: none; }
+    }
+    @media (max-width: 768px) {
+      .lp-nav { padding: 0.85rem 1.25rem; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-mobile-toggle { display: flex; align-items: center; }
+      .lp-hero { padding: 3rem 1.25rem 2.5rem; }
+      .hero-h1 { font-size: 2.4rem; }
+      .hero-right { display: none; }
+      .lp-stats { grid-template-columns: 1fr 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps-row { grid-template-columns: 1fr; }
+      .lp-section, .lp-how { padding: 4rem 1.25rem; }
+      .lp-emergency { padding: 2rem 1.25rem; flex-direction: column; gap: 1.5rem; text-align: center; }
+      .lp-cta { padding: 5rem 1.25rem; }
+      .lp-footer { padding: 1.25rem; flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .lp-stats { grid-template-columns: 1fr 1fr; }
+      .stat-num { font-size: 1.7rem; }
+      .hero-ctas { flex-direction: column; }
+      .cta-buttons { flex-direction: column; align-items: center; }
+    }
+
+    /* Mobile nav drawer */
+    .mobile-drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      background: rgba(6,15,26,0.97);
+      backdrop-filter: blur(24px);
+      padding: 1.5rem;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    .mobile-drawer.open { transform: translateX(0); }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+    }
+    .drawer-close {
+      background: rgba(255,255,255,0.08);
+      border: none;
+      color: #fff;
+      border-radius: 10px;
+      padding: 0.5rem;
+      cursor: pointer;
+      display: flex;
+    }
+    .drawer-close .material-symbols-outlined { font-size: 22px; }
+    .drawer-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .drawer-link {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 1rem 1.25rem;
+      border-radius: 14px;
+      text-decoration: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 1.05rem;
+      font-weight: 600;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+    .drawer-link:hover, .drawer-link.active { background: rgba(255,255,255,0.07); color: #fff; border-color: rgba(255,255,255,0.1); }
+    .drawer-link .material-symbols-outlined { font-size: 22px; color: #7dd5b8; }
+    .drawer-footer {
+      margin-top: auto;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .drawer-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 1rem;
+      background: linear-gradient(135deg, #1e5b74, #2f6954);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .drawer-cta .material-symbols-outlined { font-size: 20px; }
+  </style>
 </head>
 <body>
 
-  <div class="kiosk-bg-layer" id="bgLayer" aria-hidden="true"></div>
-  <div class="ambient-glow ambient-glow-1" aria-hidden="true"></div>
-  <div class="ambient-glow ambient-glow-2" aria-hidden="true"></div>
+<!-- ── Background ── -->
+<div class="lp-bg" aria-hidden="true"></div>
+<div class="orb orb-1" aria-hidden="true"></div>
+<div class="orb orb-2" aria-hidden="true"></div>
+<div class="orb orb-3" aria-hidden="true"></div>
 
-  <div class="kiosk-app" id="kioskApp">
+<div class="lp-wrap">
 
-    <!-- ═══════════════════ HEADER ═══════════════════ -->
-    <header class="kiosk-header" role="banner">
-      <div class="header-left">
-        <a class="institution-brand" href="index.html" title="Return to Home">
-          <img src="bvm_logo.png" alt="BVM Engineering College Logo" class="header-logo-img" width="48" height="48">
-          <div class="institution-details">
-            <span class="institution-title">Campus Sanctuary</span>
-            <span class="institution-sub">BVM Engineering College</span>
-          </div>
-        </a>
+  <!-- ══════════════════════════════════
+       NAV
+  ══════════════════════════════════ -->
+  <nav class="lp-nav" role="navigation" aria-label="Main Navigation">
+    <a href="index.html" class="nav-brand" aria-label="Campus Sanctuary Home">
+      <img src="bvm_logo.png" alt="BVM Engineering College Logo" width="40" height="40">
+      <div class="nav-brand-text">
+        <span class="brand-name">Campus Sanctuary</span>
+        <span class="brand-sub">BVM Engineering College</span>
       </div>
+    </a>
 
-      <div class="header-center">
-        <nav class="header-nav" aria-label="Campus Sanctuary Navigation">
-          <a href="index.html" class="nav-pill-btn" id="navBtnStart">
-            <span class="material-symbols-outlined nav-pill-icon">home</span>
-            <span>Home</span>
-          </a>
-          <a href="checkin.html" class="nav-pill-btn" id="navBtnCheckIn">
-            <span class="material-symbols-outlined nav-pill-icon">favorite</span>
-            <span>Check-In</span>
-          </a>
-          <a href="tools.html" class="nav-pill-btn" id="navBtnTools">
-            <span class="material-symbols-outlined nav-pill-icon">spa</span>
-            <span>Coping Tools</span>
-          </a>
-          <a href="counseling.html" class="nav-pill-btn" id="navBtnCounseling">
-            <span class="material-symbols-outlined nav-pill-icon">support_agent</span>
-            <span>Counselor</span>
-          </a>
-        </nav>
-      </div>
+    <div class="nav-links" role="menubar">
+      <a href="index.html" class="nav-link active" role="menuitem">
+        <span class="material-symbols-outlined">home</span> Home
+      </a>
+      <a href="checkin.html" class="nav-link" role="menuitem">
+        <span class="material-symbols-outlined">favorite</span> Check-In
+      </a>
+      <a href="tools.html" class="nav-link" role="menuitem">
+        <span class="material-symbols-outlined">spa</span> Coping Tools
+      </a>
+      <a href="counseling.html" class="nav-link" role="menuitem">
+        <span class="material-symbols-outlined">support_agent</span> Counselor
+      </a>
+    </div>
 
-      <div class="header-right">
-        <div class="clock-display" id="kioskClock" title="Current Campus Time">
-          <span class="material-symbols-outlined" style="font-size:16px">schedule</span>
-          <span id="clockTimeText">--:--</span>
+    <a href="checkin.html" class="nav-cta" id="navCtaBtn">
+      <span class="material-symbols-outlined">favorite</span> Start Check-In
+    </a>
+
+    <button class="nav-mobile-toggle" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false">
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-drawer" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Navigation Menu">
+    <div class="drawer-header">
+      <a href="index.html" class="nav-brand">
+        <img src="bvm_logo.png" alt="BVM Logo" width="36" height="36">
+        <div class="nav-brand-text">
+          <span class="brand-name">Campus Sanctuary</span>
+          <span class="brand-sub">BVM Engineering College</span>
         </div>
-        <button type="button" class="btn-icon-control" id="btnToggleSound" title="Toggle sound" aria-label="Toggle Sound">
-          <span class="material-symbols-outlined" id="soundIcon">volume_up</span>
-        </button>
-        <button type="button" class="btn-quick-exit-top" id="btnQuickExitTop" title="Quick Exit / Privacy Wipe" aria-label="Quick Exit">
-          <span class="material-symbols-outlined" style="font-size:18px">restart_alt</span>
-          <span>Quick Exit</span>
-        </button>
-        <button type="button" class="btn-icon-control mobile-only" id="mobileNavToggle" title="Open Navigation" aria-label="Open Navigation">
-          <span class="material-symbols-outlined" id="mobileNavIcon">menu</span>
-        </button>
-      </div>
-    </header>
+      </a>
+      <button class="drawer-close" id="drawerCloseBtn" aria-label="Close navigation">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="drawer-nav">
+      <a href="index.html" class="drawer-link active"><span class="material-symbols-outlined">home</span> Home</a>
+      <a href="checkin.html" class="drawer-link"><span class="material-symbols-outlined">favorite</span> Check-In &amp; Mood</a>
+      <a href="tools.html" class="drawer-link"><span class="material-symbols-outlined">spa</span> Coping Tools</a>
+      <a href="counseling.html" class="drawer-link"><span class="material-symbols-outlined">support_agent</span> Campus Counseling</a>
+    </div>
+    <div class="drawer-footer">
+      <a href="checkin.html" class="drawer-cta"><span class="material-symbols-outlined">favorite</span> Start Your Well-Being Check-In</a>
+    </div>
+  </div>
 
-    <!-- Mobile Drawer -->
-    <div class="mobile-nav-drawer" id="mobileNavDrawer" aria-hidden="true">
-      <div class="mobile-nav-header">
-        <div class="institution-brand">
-          <img src="bvm_logo.png" alt="BVM Logo" class="header-logo-img" width="48" height="48">
-          <div class="institution-details">
-            <span class="institution-title">Campus Sanctuary</span>
-            <span class="institution-sub">BVM Engineering College</span>
-          </div>
-        </div>
-        <button type="button" class="btn-icon-control" id="mobileNavClose" aria-label="Close Navigation">
-          <span class="material-symbols-outlined">close</span>
-        </button>
+  <!-- ══════════════════════════════════
+       HERO
+  ══════════════════════════════════ -->
+  <section class="lp-hero" aria-labelledby="heroHeading">
+    <div class="hero-left">
+
+      <div class="hero-eyebrow">
+        <span class="material-symbols-outlined">shield</span>
+        100% Anonymous &nbsp;·&nbsp; No Login Required
       </div>
-      <div class="mobile-nav-links">
-        <a href="index.html" class="mobile-nav-link">
-          <span class="material-symbols-outlined">home</span>
-          <span>Home</span>
-        </a>
-        <a href="checkin.html" class="mobile-nav-link">
+
+      <h1 class="hero-h1" id="heroHeading">
+        Your mental<br>
+        health <span class="accent">always</span><br>
+        comes first.
+      </h1>
+
+      <p class="hero-lead">
+        A safe, confidential space designed for BVM students. Check your well-being, 
+        explore calming tools, and connect with campus counselors — in minutes, 
+        without any judgment.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="checkin.html" class="btn-hero-primary" id="heroCheckInBtn">
           <span class="material-symbols-outlined">favorite</span>
-          <span>Check-In &amp; Mood</span>
+          Start My Check-In
         </a>
-        <a href="tools.html" class="mobile-nav-link">
+        <a href="tools.html" class="btn-hero-secondary" id="heroToolsBtn">
           <span class="material-symbols-outlined">spa</span>
-          <span>Coping Tools</span>
-        </a>
-        <a href="counseling.html" class="mobile-nav-link">
-          <span class="material-symbols-outlined">support_agent</span>
-          <span>Campus Counseling</span>
+          Explore Coping Tools
         </a>
       </div>
-      <div class="mobile-nav-footer">
-        <div class="confidential-pill" style="justify-content:center;width:100%">
-          <span class="material-symbols-outlined">shield</span>
-          <span>100% Private &amp; Anonymous</span>
-        </div>
+
+      <div class="hero-trust">
+        <span class="trust-badge">
+          <span class="material-symbols-outlined">lock</span>
+          No data stored
+        </span>
+        <span class="trust-badge">
+          <span class="material-symbols-outlined">person_off</span>
+          No roll number needed
+        </span>
+        <span class="trust-badge">
+          <span class="material-symbols-outlined">verified_user</span>
+          BVM Wellness Cell
+        </span>
       </div>
     </div>
 
-    <!-- ═══════════════════ MAIN ═══════════════════ -->
-    <main class="kiosk-main" id="mainContent" role="main">
-      <section class="screen-container active" id="screenWelcome" aria-labelledby="welcomeHeading">
-
-        <!-- Hero -->
-        <div class="welcome-hero-wrap">
-          <div class="welcome-grid">
-            <div class="welcome-left-col">
-              <div class="welcome-left-inner">
-                <div class="institution-hero-ribbon">
-                  <span class="material-symbols-outlined" style="font-size:16px">school</span>
-                  <span>BIRLA VISHVAKARMA MAHAVIDYALAYA • STUDENT WELL-BEING CELL</span>
-                </div>
-                <h1 class="welcome-heading" id="welcomeHeading">Your Mental Well-being Matters.</h1>
-                <p class="welcome-lead">Explore your feelings, discover helpful self-care resources, and find university support when you need it.</p>
-                <div class="hero-actions-row">
-                  <a href="checkin.html" class="btn-primary-action hero-btn-primary" id="btnWelcomeStart">
-                    <span class="btn-label-wrap">
-                      <span class="material-symbols-outlined">favorite</span>
-                      <span>Start Check-In</span>
-                    </span>
-                    <span class="material-symbols-outlined btn-arrow-icon">arrow_forward</span>
-                  </a>
-                  <a href="#exploreSupportSection" class="btn-secondary-action hero-btn-secondary" id="btnWelcomeExplore">
-                    <span class="material-symbols-outlined">explore</span>
-                    <span>Explore Support</span>
-                  </a>
-                </div>
-                <div class="privacy-notice-row">
-                  <span class="material-symbols-outlined">shield</span>
-                  <span>Confidential &amp; Student-Focused • Free On-Campus Resource</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="welcome-right-col">
-              <div class="sanctuary-card">
-                <div class="decor-circle decor-circle-1" aria-hidden="true"></div>
-                <div class="decor-circle decor-circle-2" aria-hidden="true"></div>
-                <div class="sanctuary-content-top">
-                  <div class="sanctuary-college-header">
-                    <div class="sanctuary-glyph-box">
-                      <span class="material-symbols-outlined">eco</span>
-                    </div>
-                    <div class="sanctuary-college-tag">
-                      <span class="college-tag-label">CAMPUS SANCTUARY</span>
-                      <span class="college-tag-name">Birla Vishvakarma Mahavidyalaya</span>
-                    </div>
-                  </div>
-                  <h2 class="sanctuary-title">A Peaceful Space for Every Student</h2>
-                  <p class="sanctuary-desc">Take a moment to pause, reflect, and recharge amidst your academic journey.</p>
-                  <div class="sanctuary-photo-frame" title="BVM Campus">
-                    <img src="bvm_image.webp" alt="BVM Engineering College Campus" id="campusSanctuaryImg">
-                    <div class="photo-overlay-tag">
-                      <span class="material-symbols-outlined" style="font-size:16px">park</span>
-                      <span>BVM Main Heritage Building • Vallabh Vidyanagar</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="live-pulse-container" id="sanctuaryPulseTrigger" title="Tap to try guided breathing" role="button" tabindex="0">
-                  <div class="pulse-indicator-left">
-                    <div class="pulse-ring-wrap">
-                      <div class="pulse-ring-anim"></div>
-                      <div class="pulse-ring-dot"></div>
-                    </div>
-                    <span class="pulse-label">Paced Breathing</span>
-                  </div>
-                  <span class="pulse-phase-text" id="liveBreathPhaseText">Inhale...</span>
-                </div>
-              </div>
-            </div>
-          </div>
+    <!-- Hero visual cards -->
+    <div class="hero-right" aria-hidden="true">
+      <!-- Breathing card -->
+      <div class="hero-card">
+        <div class="hero-card-icon blue">
+          <span class="material-symbols-outlined">air</span>
         </div>
-
-        <!-- How It Works -->
-        <div class="landing-section how-it-works-section" id="howItWorksSection">
-          <div class="section-header-centered">
-            <div class="pill-badge">
-              <span class="material-symbols-outlined">route</span>
-              <span>HOW IT WORKS</span>
-            </div>
-            <h2 class="section-title">A Simple 3-Step Flow</h2>
-            <p class="section-sub">Navigate your well-being with three clear steps designed for student life:</p>
-          </div>
-          <div class="how-steps-grid">
-            <div class="how-step-card" id="howStepCard1">
-              <div class="how-step-top">
-                <span class="how-step-badge">Step 1</span>
-                <div class="how-step-icon blue"><span class="material-symbols-outlined">sentiment_satisfied</span></div>
-              </div>
-              <h3 class="how-step-title">Check In</h3>
-              <p class="how-step-desc">Reflect on your mood or stress through a quick, private self-check questionnaire.</p>
-              <a href="checkin.html" class="how-step-btn">
-                <span>Start Check-In</span>
-                <span class="material-symbols-outlined">arrow_forward</span>
-              </a>
-            </div>
-            <div class="how-step-card" id="howStepCard2">
-              <div class="how-step-top">
-                <span class="how-step-badge">Step 2</span>
-                <div class="how-step-icon green"><span class="material-symbols-outlined">spa</span></div>
-              </div>
-              <h3 class="how-step-title">Find Support</h3>
-              <p class="how-step-desc">Explore self-help resources, guided breathing, and relaxation activities.</p>
-              <a href="tools.html" class="how-step-btn">
-                <span>View Self-Help</span>
-                <span class="material-symbols-outlined">arrow_forward</span>
-              </a>
-            </div>
-            <div class="how-step-card" id="howStepCard3">
-              <div class="how-step-top">
-                <span class="how-step-badge">Step 3</span>
-                <div class="how-step-icon primary"><span class="material-symbols-outlined">support_agent</span></div>
-              </div>
-              <h3 class="how-step-title">Talk to a Counselor</h3>
-              <p class="how-step-desc">Find university counselling information and connect with on-campus counselors.</p>
-              <a href="counseling.html" class="how-step-btn">
-                <span>Counseling Info</span>
-                <span class="material-symbols-outlined">arrow_forward</span>
-              </a>
-            </div>
-          </div>
+        <h3>Guided Box Breathing</h3>
+        <p>4-4-4-4 breathing pattern with soothing audio to calm your nervous system instantly.</p>
+        <div class="breath-pulse">
+          <div class="breath-ring"><div class="breath-dot"></div></div>
+          <span class="breath-text">Currently: &nbsp;</span>
+          <span class="breath-phase" id="heroBreathPhase">Inhale...</span>
         </div>
-
-        <!-- Explore Support -->
-        <div class="landing-section explore-support-section" id="exploreSupportSection">
-          <div class="section-header-centered">
-            <div class="pill-badge">
-              <span class="material-symbols-outlined">explore</span>
-              <span>EXPLORE SUPPORT</span>
-            </div>
-            <h2 class="section-title">Core Support Features</h2>
-            <p class="section-sub">Three categories of genuinely available support services on campus:</p>
-          </div>
-          <div class="explore-categories-grid">
-            <div class="explore-cat-card" id="catCardAssessment">
-              <div class="cat-card-header">
-                <div class="cat-icon-box blue"><span class="material-symbols-outlined">assignment_turned_in</span></div>
-                <span class="cat-tag">Self-Assessment</span>
-              </div>
-              <h3 class="cat-card-title">Mood &amp; Stress Check-In</h3>
-              <p class="cat-card-desc">Private self-assessments to help you understand your academic load, fatigue, and emotional state.</p>
-              <ul class="cat-features-list">
-                <li><span class="material-symbols-outlined">check_circle</span><span>1-tap mood and influence selection</span></li>
-                <li><span class="material-symbols-outlined">check_circle</span><span>8-question academic stress screening</span></li>
-                <li><span class="material-symbols-outlined">check_circle</span><span>Personalized result summary &amp; insights</span></li>
-              </ul>
-              <a href="checkin.html" class="btn-cat-action">
-                <span>Take Self-Assessment</span>
-                <span class="material-symbols-outlined">arrow_forward</span>
-              </a>
-            </div>
-            <div class="explore-cat-card" id="catCardSelfCare">
-              <div class="cat-card-header">
-                <div class="cat-icon-box green"><span class="material-symbols-outlined">self_improvement</span></div>
-                <span class="cat-tag">Self-Care</span>
-              </div>
-              <h3 class="cat-card-title">Coping Tools &amp; Relaxation</h3>
-              <p class="cat-card-desc">Interactive calming exercises and practical toolkits to help you reset between classes or exams.</p>
-              <ul class="cat-features-list">
-                <li><span class="material-symbols-outlined">check_circle</span><span>4-4-4-4 Box Breathing with soothing chimes</span></li>
-                <li><span class="material-symbols-outlined">check_circle</span><span>5-4-3-2-1 Sensory Grounding mindfulness</span></li>
-                <li><span class="material-symbols-outlined">check_circle</span><span>Toolkits for exam stress, sleep, and quiet spots</span></li>
-              </ul>
-              <a href="tools.html" class="btn-cat-action">
-                <span>Explore Self-Care</span>
-                <span class="material-symbols-outlined">arrow_forward</span>
-              </a>
-            </div>
-            <div class="explore-cat-card" id="catCardCounseling">
-              <div class="cat-card-header">
-                <div class="cat-icon-box primary"><span class="material-symbols-outlined">support_agent</span></div>
-                <span class="cat-tag">University Support</span>
-              </div>
-              <h3 class="cat-card-title">Counseling &amp; Guidance</h3>
-              <p class="cat-card-desc">Confidential connection with qualified counselors at the BVM Campus Counseling Cell.</p>
-              <ul class="cat-features-list">
-                <li><span class="material-symbols-outlined">check_circle</span><span>Book in-person sessions at Room B-201</span></li>
-                <li><span class="material-symbols-outlined">check_circle</span><span>Request a private callback at your preferred time</span></li>
-                <li><span class="material-symbols-outlined">check_circle</span><span>Generate an anonymous confidential pass</span></li>
-              </ul>
-              <a href="counseling.html" class="btn-cat-action">
-                <span>University Counseling</span>
-                <span class="material-symbols-outlined">arrow_forward</span>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- CTA Banner -->
-        <div class="landing-section support-cta-section" id="supportCtaSection">
-          <div class="support-cta-banner">
-            <div class="support-cta-inner">
-              <div class="support-cta-badge">
-                <span class="material-symbols-outlined">diversity_1</span>
-                <span>CAMPUS COUNSELING CELL</span>
-              </div>
-              <h2 class="support-cta-heading">You Don't Have to Figure Everything Out Alone.</h2>
-              <p class="support-cta-text">Whether you are navigating academic pressure, personal concerns, or simply need someone to talk to, our university counselors are here to listen and help.</p>
-              <div class="support-cta-action-wrap">
-                <a href="counseling.html" class="btn-support-cta">
-                  <span class="material-symbols-outlined">calendar_month</span>
-                  <span>Connect with University Counseling</span>
-                </a>
-              </div>
-              <div class="support-cta-meta">
-                <span>Room B-201, Main Building</span>
-                <span>•</span>
-                <span>Mon to Sat: 9:00 AM – 5:00 PM</span>
-                <span>•</span>
-                <span>In-person or Callback Options</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Privacy Note -->
-        <div class="landing-section privacy-note-section" id="privacyNoteSection">
-          <div class="privacy-note-card">
-            <div class="privacy-note-col">
-              <div class="note-col-header">
-                <div class="note-icon-wrap blue"><span class="material-symbols-outlined">lock</span></div>
-                <h3 class="note-col-title">Privacy &amp; Data Safeguards</h3>
-              </div>
-              <p class="note-col-text">Your privacy is paramount. Self-assessments and tools on this kiosk operate without requiring student IDs, logins, or roll numbers. All interaction data remains within your active local session, and an automatic timeout clears the screen after inactivity to protect your confidentiality.</p>
-            </div>
-            <div class="privacy-note-divider" aria-hidden="true"></div>
-            <div class="privacy-note-col">
-              <div class="note-col-header">
-                <div class="note-icon-wrap green"><span class="material-symbols-outlined">health_and_safety</span></div>
-                <h3 class="note-col-title">Mental Well-Being Notice</h3>
-              </div>
-              <p class="note-col-text">The self-assessments, guided breathing, and coping resources on this platform are designed for self-reflection and stress management. They do not replace professional mental health evaluation, medical diagnosis, or therapy. If you need urgent assistance, contact Tele-MANAS at <strong>14416</strong> or visit campus health services.</p>
-            </div>
-          </div>
-        </div>
-
-      </section>
-    </main>
-
-    <!-- ═══════════════════ FOOTER ═══════════════════ -->
-    <footer class="kiosk-footer" role="contentinfo">
-      <div class="footer-left">
-        <div class="crisis-callout">
-          <span class="material-symbols-outlined">emergency</span>
-          <span>24/7 Tele-MANAS: <strong>14416</strong></span>
-        </div>
-        <span class="footer-bullet">•</span>
-        <span class="footer-sub-note">BVM Counseling Room B-201 • KIRAN: 1800-599-0019</span>
+        <a href="tools.html" class="hero-card-link">
+          Try Now <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
       </div>
-      <div class="footer-right">
-        <div class="confidential-pill">
-          <span class="material-symbols-outlined">shield</span>
-          <span>100% Anonymous</span>
+
+      <!-- Two small cards side by side -->
+      <div class="hero-card-row">
+        <div class="hero-card">
+          <div class="hero-card-icon green">
+            <span class="material-symbols-outlined">assignment_turned_in</span>
+          </div>
+          <h3>Mood Check-In</h3>
+          <p>Quick 8-question well-being assessment.</p>
+          <a href="checkin.html" class="hero-card-link">
+            Start <span class="material-symbols-outlined">arrow_forward</span>
+          </a>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-icon teal">
+            <span class="material-symbols-outlined">support_agent</span>
+          </div>
+          <h3>Talk to Counselor</h3>
+          <p>Anonymous pass to Room B-201.</p>
+          <a href="counseling.html" class="hero-card-link">
+            Connect <span class="material-symbols-outlined">arrow_forward</span>
+          </a>
         </div>
       </div>
-    </footer>
+    </div>
+  </section>
 
-    <!-- Mobile Bottom Nav -->
-    <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Mobile Navigation">
-      <a href="index.html" class="mobile-bottom-nav-btn" id="mNavBtnStart">
-        <span class="material-symbols-outlined">home</span>
-        <span>Home</span>
-      </a>
-      <a href="checkin.html" class="mobile-bottom-nav-btn" id="mNavBtnCheckIn">
+  <!-- ══════════════════════════════════
+       STATS STRIP
+  ══════════════════════════════════ -->
+  <div class="lp-stats" role="region" aria-label="Key facts">
+    <div class="stat-item reveal">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Anonymous &amp; Private</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.1s">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Data Stored After Session</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.2s">
+      <div class="stat-num">8</div>
+      <div class="stat-label">Well-Being Questions</div>
+    </div>
+    <div class="stat-item reveal" style="transition-delay:0.3s">
+      <div class="stat-num">Free</div>
+      <div class="stat-label">For Every BVM Student</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       FEATURES
+  ══════════════════════════════════ -->
+  <section class="lp-section" id="features" aria-labelledby="featuresHeading">
+    <div class="section-eyebrow">
+      <span class="material-symbols-outlined">explore</span>
+      What's Inside
+    </div>
+    <h2 class="section-title" id="featuresHeading">Everything you need,<br>right here on campus.</h2>
+    <p class="section-sub">Three focused tools — each designed to meet you exactly where you are today.</p>
+
+    <div class="features-grid">
+
+      <!-- Check-In -->
+      <div class="feat-card reveal">
+        <span class="feat-card-tag blue">
+          <span class="material-symbols-outlined">favorite</span> Step 1
+        </span>
+        <div class="feat-big-icon blue">
+          <span class="material-symbols-outlined">sentiment_satisfied</span>
+        </div>
+        <h3>Mood &amp; Well-Being Check-In</h3>
+        <p>A private, structured check-in that helps you understand your current emotional state and academic stress level in just 2 minutes.</p>
+        <ul class="feat-bullets">
+          <li><span class="material-symbols-outlined">check</span> Select your mood from 6 emotion cards</li>
+          <li><span class="material-symbols-outlined">check</span> 8-question engineering-specific assessment</li>
+          <li><span class="material-symbols-outlined">check</span> Personalized result with next steps</li>
+          <li><span class="material-symbols-outlined">check</span> No login, no roll number — ever</li>
+        </ul>
+        <a href="checkin.html" class="feat-card-btn blue">
+          <span class="material-symbols-outlined">arrow_forward</span> Start Check-In
+        </a>
+      </div>
+
+      <!-- Coping Tools -->
+      <div class="feat-card reveal" style="transition-delay:0.15s">
+        <span class="feat-card-tag green">
+          <span class="material-symbols-outlined">spa</span> Step 2
+        </span>
+        <div class="feat-big-icon green">
+          <span class="material-symbols-outlined">self_improvement</span>
+        </div>
+        <h3>Coping Tools &amp; Self-Care</h3>
+        <p>Practical, interactive tools you can use right now to calm down, reset your focus, and manage exam-time stress before it builds up.</p>
+        <ul class="feat-bullets">
+          <li><span class="material-symbols-outlined">check</span> 4-4-4-4 Box Breathing with audio cues</li>
+          <li><span class="material-symbols-outlined">check</span> 5-4-3-2-1 Sensory Grounding exercise</li>
+          <li><span class="material-symbols-outlined">check</span> Sleep hygiene &amp; exam stress guides</li>
+          <li><span class="material-symbols-outlined">check</span> AI wellness companion for quick support</li>
+        </ul>
+        <a href="tools.html" class="feat-card-btn green">
+          <span class="material-symbols-outlined">arrow_forward</span> Open Coping Tools
+        </a>
+      </div>
+
+      <!-- Counseling -->
+      <div class="feat-card reveal" style="transition-delay:0.3s">
+        <span class="feat-card-tag teal">
+          <span class="material-symbols-outlined">support_agent</span> Step 3
+        </span>
+        <div class="feat-big-icon teal">
+          <span class="material-symbols-outlined">diversity_1</span>
+        </div>
+        <h3>University Counseling Cell</h3>
+        <p>When you need more than self-help, connect confidentially with BVM's trained counselors. Your anonymity is completely protected.</p>
+        <ul class="feat-bullets">
+          <li><span class="material-symbols-outlined">check</span> Book in-person session at Room B-201</li>
+          <li><span class="material-symbols-outlined">check</span> Request a private callback at your time</li>
+          <li><span class="material-symbols-outlined">check</span> Generate an anonymous appointment pass</li>
+          <li><span class="material-symbols-outlined">check</span> Mon–Sat, 9 AM – 5 PM</li>
+        </ul>
+        <a href="counseling.html" class="feat-card-btn teal">
+          <span class="material-symbols-outlined">arrow_forward</span> Connect with Counselor
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       HOW IT WORKS
+  ══════════════════════════════════ -->
+  <section class="lp-how reveal" id="how-it-works" aria-labelledby="howHeading">
+    <div class="section-eyebrow">
+      <span class="material-symbols-outlined">route</span>
+      How It Works
+    </div>
+    <h2 class="section-title" id="howHeading">Three steps. Two minutes.<br>Zero judgment.</h2>
+    <p class="section-sub" style="margin-bottom:3.5rem">No registration, no waiting rooms. Just open, tap, and feel supported.</p>
+
+    <div class="steps-row">
+      <div class="step-item reveal">
+        <div class="step-num-badge">
+          <div class="num-inner">1</div>
+        </div>
+        <h3>Check In</h3>
+        <p>Select your mood and answer 8 quick questions about how you've been feeling this week.</p>
+        <a href="checkin.html" class="step-link">
+          Start Check-In <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+      </div>
+
+      <div class="step-item reveal" style="transition-delay:0.15s">
+        <div class="step-num-badge">
+          <div class="num-inner">2</div>
+        </div>
+        <h3>Get Support</h3>
+        <p>Receive personalized recommendations — breathing exercises, grounding, or reading guides.</p>
+        <a href="tools.html" class="step-link">
+          See Tools <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+      </div>
+
+      <div class="step-item reveal" style="transition-delay:0.3s">
+        <div class="step-num-badge">
+          <div class="num-inner">3</div>
+        </div>
+        <h3>Talk to Someone</h3>
+        <p>If you need more, generate an anonymous pass and meet with a BVM counselor privately.</p>
+        <a href="counseling.html" class="step-link">
+          Get Pass <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       EMERGENCY STRIP
+  ══════════════════════════════════ -->
+  <div class="lp-emergency" role="complementary" aria-label="Emergency helplines">
+    <div class="emergency-left">
+      <div class="emergency-icon-wrap">
+        <span class="material-symbols-outlined">emergency</span>
+      </div>
+      <div class="emergency-text">
+        <h4>In a crisis? Help is available right now.</h4>
+        <p>These services are free, 24/7, and fully confidential.</p>
+      </div>
+    </div>
+    <div class="emergency-numbers">
+      <div class="emergency-pill">
+        <span class="material-symbols-outlined">call</span>
+        Tele-MANAS: <strong>14416</strong>
+      </div>
+      <div class="emergency-pill">
+        <span class="material-symbols-outlined">call</span>
+        iCall: <strong>9152987821</strong>
+      </div>
+      <div class="emergency-pill">
+        <span class="material-symbols-outlined">call</span>
+        KIRAN: <strong>1800-599-0019</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       FINAL CTA
+  ══════════════════════════════════ -->
+  <section class="lp-cta reveal" aria-label="Get started">
+    <h2>You deserve to feel<br>supported right now.</h2>
+    <p>Take 2 minutes for yourself. Your well-being check-in is waiting — private, free, and judgment-free.</p>
+    <div class="cta-buttons">
+      <a href="checkin.html" class="btn-cta-main" id="finalCheckInBtn">
         <span class="material-symbols-outlined">favorite</span>
-        <span>Check-In</span>
+        Start My Well-Being Check-In
       </a>
-      <a href="tools.html" class="mobile-bottom-nav-btn" id="mNavBtnTools">
-        <span class="material-symbols-outlined">spa</span>
-        <span>Coping</span>
-      </a>
-      <a href="counseling.html" class="mobile-bottom-nav-btn" id="mNavBtnCounseling">
+      <a href="counseling.html" class="btn-cta-ghost" id="finalCounselingBtn">
         <span class="material-symbols-outlined">support_agent</span>
-        <span>Counselor</span>
+        Speak with a Counselor
       </a>
-    </nav>
-
-    <!-- Accessibility Modal -->
-    <div class="modal-overlay" id="modalAccessibility" role="dialog" aria-modal="true" aria-labelledby="modalAccessTitle">
-      <div class="modal-sheet" style="max-width:500px">
-        <div class="modal-header-bar">
-          <div class="modal-title-wrap">
-            <div class="modal-title-icon"><span class="material-symbols-outlined">accessibility_new</span></div>
-            <h2 class="modal-title" id="modalAccessTitle">Accessibility Options</h2>
-          </div>
-          <button type="button" class="btn-modal-close" id="btnCloseAccess" aria-label="Close">
-            <span class="material-symbols-outlined">close</span>
-          </button>
-        </div>
-        <div class="modal-body-content">
-          <div style="display:flex;flex-direction:column;gap:1.25rem">
-            <div>
-              <label style="font-family:var(--font-label);font-weight:600;display:block;margin-bottom:.5rem">Text Size</label>
-              <div style="display:flex;gap:.75rem">
-                <button type="button" class="topic-pill selected" id="btnTextStandard">Standard (A)</button>
-                <button type="button" class="topic-pill" id="btnTextLarge">Large (A+)</button>
-              </div>
-            </div>
-            <div>
-              <label style="font-family:var(--font-label);font-weight:600;display:block;margin-bottom:.5rem">Calming Audio &amp; Chimes</label>
-              <div style="display:flex;gap:.75rem">
-                <button type="button" class="topic-pill selected" id="btnAudioOn">Enabled</button>
-                <button type="button" class="topic-pill" id="btnAudioOff">Muted</button>
-              </div>
-            </div>
-            <div>
-              <label style="font-family:var(--font-label);font-weight:600;display:block;margin-bottom:.5rem">Contrast Mode</label>
-              <div style="display:flex;gap:.75rem">
-                <button type="button" class="topic-pill selected" id="btnContrastNormal">Default Calm</button>
-                <button type="button" class="topic-pill" id="btnContrastHigh">High Contrast</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer-bar">
-          <button type="button" class="btn-flow-continue" id="btnDoneAccess" style="width:100%;justify-content:center">
-            <span>Apply &amp; Return</span>
-          </button>
-        </div>
-      </div>
     </div>
+  </section>
 
-  </div><!-- End .kiosk-app -->
+  <!-- ══════════════════════════════════
+       FOOTER
+  ══════════════════════════════════ -->
+  <footer class="lp-footer" role="contentinfo">
+    <div class="footer-left-group">
+      <div class="footer-crisis">
+        <span class="material-symbols-outlined">emergency</span>
+        Crisis: Tele-MANAS <strong>14416</strong>
+      </div>
+      <span class="footer-sep">•</span>
+      <span class="footer-note">BVM Counseling · Room B-201 · Mon–Sat 9AM–5PM</span>
+    </div>
+    <div class="footer-anon">
+      <span class="material-symbols-outlined">shield</span>
+      100% Anonymous &amp; Private
+    </div>
+  </footer>
 
-  <script src="shared.js"></script>
-  <script>
-    // Home page specific: live breath phase cycling
-    document.addEventListener('DOMContentLoaded', () => {
-      const phases = ['Inhale...', 'Hold...', 'Exhale...', 'Rest...'];
-      let idx = 0;
-      const el = document.getElementById('liveBreathPhaseText');
-      setInterval(() => { idx = (idx + 1) % phases.length; if(el) el.textContent = phases[idx]; }, 3500);
-      // Pulse trigger → go to tools page breathing section
-      const trigger = document.getElementById('sanctuaryPulseTrigger');
-      if (trigger) {
-        trigger.addEventListener('click', () => { window.location.href = 'tools.html#breathing'; });
-        trigger.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); window.location.href='tools.html#breathing'; } });
-      }
-      // Smooth scroll for explore link
-      const exploreBtn = document.getElementById('btnWelcomeExplore');
-      if (exploreBtn) {
-        exploreBtn.addEventListener('click', e => {
-          e.preventDefault();
-          document.getElementById('exploreSupportSection')?.scrollIntoView({ behavior: 'smooth' });
-        });
-      }
-    });
-  </script>
+</div><!-- /.lp-wrap -->
+
+<script>
+  // ── Mobile drawer ──────────────────────────────────────────────────────────
+  const drawer = document.getElementById('mobileDrawer');
+  const mobileBtn = document.getElementById('mobileMenuBtn');
+  const closeBtn = document.getElementById('drawerCloseBtn');
+  mobileBtn.addEventListener('click', () => { drawer.classList.add('open'); mobileBtn.setAttribute('aria-expanded','true'); });
+  closeBtn.addEventListener('click', () => { drawer.classList.remove('open'); mobileBtn.setAttribute('aria-expanded','false'); });
+  drawer.addEventListener('click', e => { if (e.target === drawer) { drawer.classList.remove('open'); } });
+
+  // ── Scroll reveal ──────────────────────────────────────────────────────────
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => io.observe(r));
+
+  // ── Live breath phase on hero card ────────────────────────────────────────
+  const phases = ['Inhale...', 'Hold...', 'Exhale...', 'Rest...'];
+  let pi = 0;
+  const phaseEl = document.getElementById('heroBreathPhase');
+  setInterval(() => { pi = (pi + 1) % phases.length; if (phaseEl) phaseEl.textContent = phases[pi]; }, 3500);
+</script>
+
 </body>
 </html>
