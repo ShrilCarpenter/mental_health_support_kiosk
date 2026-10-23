@@ -4,23 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Campus Sanctuary – BVM Mental Health Support Kiosk</title>
-  <meta name="description" content="Confidential, anonymous mental health and well-being support for BVM Engineering College students. Quick check-in, coping tools, and counselor appointments.">
+  <meta name="description" content="Confidential, anonymous mental health and well-being support for BVM Engineering College students. Information on privacy, campus resources, and support services.">
   <meta name="theme-color" content="#1e5b74">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="stylesheet" href="styles.css?v=6">
 
   <style>
-    /* ─── Non-Scrollable Viewport Hub Layout ─── */
+    /* ─── Non-Scrollable Informational Viewport Layout ─── */
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
     }
 
-    @media (min-width: 900px) and (min-height: 650px) {
+    @media (min-width: 900px) and (min-height: 620px) {
       body {
         overflow: hidden;
       }
@@ -31,8 +31,8 @@
       }
       .home-main {
         overflow: hidden !important;
-        padding-top: calc(var(--header-height) + 1.25rem) !important;
-        padding-bottom: calc(var(--footer-height) + 1rem) !important;
+        padding-top: calc(var(--header-height) + 1rem) !important;
+        padding-bottom: calc(var(--footer-height) + 0.75rem) !important;
       }
     }
 
@@ -42,7 +42,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: calc(var(--header-height) + 1.5rem) 1.5rem calc(var(--footer-height) + 2rem);
+      padding: calc(var(--header-height) + 1.25rem) 1.5rem calc(var(--footer-height) + 1.5rem);
       position: relative;
       z-index: 2;
     }
@@ -54,16 +54,16 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 1.5rem;
+      gap: 1.25rem;
     }
 
-    /* ─── Hero Header ─── */
+    /* ─── Hero Heading (Informational Welcome) ─── */
     .home-hero-header {
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
 
     .home-pill-badge {
@@ -72,7 +72,7 @@
       gap: 0.45rem;
       background: var(--secondary-container);
       color: var(--on-secondary-container);
-      padding: 0.35rem 0.95rem;
+      padding: 0.3rem 0.9rem;
       border-radius: var(--radius-full);
       font-family: var(--font-label);
       font-size: 0.78rem;
@@ -84,7 +84,7 @@
 
     .home-hero-title {
       font-family: var(--font-headline);
-      font-size: 2.35rem;
+      font-size: 2.25rem;
       font-weight: 700;
       color: var(--on-surface);
       line-height: 1.2;
@@ -94,63 +94,51 @@
 
     .home-hero-subtitle {
       font-family: var(--font-body);
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: var(--on-surface-variant);
-      max-width: 680px;
+      max-width: 720px;
       line-height: 1.5;
       margin: 0;
     }
 
-    /* ─── 3 Primary Action Hub Cards ─── */
-    .home-hub-grid {
+    /* ─── 3 Informational Panels (Purely Informational - No Duplicate Buttons) ─── */
+    .home-info-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+      gap: 1.35rem;
       width: 100%;
     }
 
-    .home-action-card {
+    .home-info-card {
       background: #ffffff;
       border: 1.5px solid var(--border-card);
       border-radius: var(--radius-2xl);
-      padding: 1.85rem 1.65rem;
+      padding: 1.65rem 1.5rem;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      text-decoration: none;
-      color: inherit;
       box-shadow: 0 4px 18px rgba(22, 29, 32, 0.04);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
       overflow: hidden;
     }
 
-    .home-action-card::before {
+    .home-info-card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       height: 4px;
-      background: transparent;
-      transition: background 0.25s ease;
     }
 
-    .home-action-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(30, 91, 116, 0.12);
-      border-color: var(--primary-fixed-dim);
-    }
-
-    .home-action-card.card-checkin::before {
+    .home-info-card.card-privacy::before {
       background: linear-gradient(90deg, #1e5b74, #4893b3);
     }
 
-    .home-action-card.card-tools::before {
+    .home-info-card.card-mission::before {
       background: linear-gradient(90deg, #2f6954, #5da78a);
     }
 
-    .home-action-card.card-counseling::before {
+    .home-info-card.card-campus::before {
       background: linear-gradient(90deg, #875723, #d4954f);
     }
 
@@ -158,38 +146,33 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
     }
 
     .card-icon-bubble {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.25s ease;
-    }
-
-    .home-action-card:hover .card-icon-bubble {
-      transform: scale(1.08);
     }
 
     .card-icon-bubble .material-symbols-outlined {
-      font-size: 28px;
+      font-size: 26px;
     }
 
-    .card-checkin .card-icon-bubble {
+    .card-privacy .card-icon-bubble {
       background: rgba(30, 91, 116, 0.1);
       color: #1e5b74;
     }
 
-    .card-tools .card-icon-bubble {
+    .card-mission .card-icon-bubble {
       background: rgba(47, 105, 84, 0.12);
       color: #2f6954;
     }
 
-    .card-counseling .card-icon-bubble {
+    .card-campus .card-icon-bubble {
       background: rgba(135, 87, 35, 0.1);
       color: #875723;
     }
@@ -204,24 +187,24 @@
       border-radius: var(--radius-full);
     }
 
-    .card-checkin .card-badge-pill {
+    .card-privacy .card-badge-pill {
       background: #e1f3ff;
       color: #034d65;
     }
 
-    .card-tools .card-badge-pill {
+    .card-mission .card-badge-pill {
       background: #e6f3ed;
       color: #2f6954;
     }
 
-    .card-counseling .card-badge-pill {
+    .card-campus .card-badge-pill {
       background: #fbf2e6;
       color: #875723;
     }
 
     .card-title {
       font-family: var(--font-headline);
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--on-surface);
       margin: 0 0 0.5rem 0;
@@ -230,189 +213,128 @@
 
     .card-desc {
       font-family: var(--font-body);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--on-surface-variant);
-      line-height: 1.5;
-      margin: 0 0 1.25rem 0;
+      line-height: 1.55;
+      margin: 0 0 1rem 0;
       flex-grow: 1;
     }
 
-    .card-feature-list {
+    .card-bullet-list {
       display: flex;
       flex-direction: column;
-      gap: 0.4rem;
-      margin-bottom: 1.35rem;
-      padding-top: 0.65rem;
+      gap: 0.45rem;
+      padding-top: 0.75rem;
       border-top: 1px dashed var(--border-card);
     }
 
-    .card-feature-item {
+    .card-bullet-item {
       display: flex;
-      align-items: center;
-      gap: 0.45rem;
+      align-items: flex-start;
+      gap: 0.5rem;
       font-family: var(--font-label);
-      font-size: 0.82rem;
-      color: var(--on-surface-variant);
-      font-weight: 500;
+      font-size: 0.83rem;
+      color: var(--on-surface);
+      line-height: 1.4;
     }
 
-    .card-feature-item .material-symbols-outlined {
+    .card-bullet-item .bullet-icon {
       font-size: 16px;
-      color: var(--secondary);
+      margin-top: 1px;
+      flex-shrink: 0;
     }
 
-    .card-action-btn {
-      width: 100%;
-      min-height: 48px;
-      border-radius: var(--radius-lg);
+    .card-privacy .bullet-icon { color: #1e5b74; }
+    .card-mission .bullet-icon { color: #2f6954; }
+    .card-campus .bullet-icon { color: #875723; }
+
+    /* ─── Informational Navigation Guidance Strip ─── */
+    .home-nav-hint-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 1.2rem;
-      font-family: var(--font-label);
-      font-size: 0.95rem;
-      font-weight: 700;
-      transition: all 0.2s ease;
-      border: none;
-      cursor: pointer;
-    }
-
-    .card-checkin .card-action-btn {
-      background: #1e5b74;
-      color: #ffffff;
-    }
-
-    .card-checkin:hover .card-action-btn {
-      background: #16465a;
-    }
-
-    .card-tools .card-action-btn {
-      background: #2f6954;
-      color: #ffffff;
-    }
-
-    .card-tools:hover .card-action-btn {
-      background: #235241;
-    }
-
-    .card-counseling .card-action-btn {
-      background: #875723;
-      color: #ffffff;
-    }
-
-    .card-counseling:hover .card-action-btn {
-      background: #6e4419;
-    }
-
-    .card-action-btn .btn-arrow {
-      font-size: 20px;
-      transition: transform 0.2s ease;
-    }
-
-    .home-action-card:hover .card-action-btn .btn-arrow {
-      transform: translateX(3px);
-    }
-
-    /* ─── Reassurance Strip ─── */
-    .home-reassurance-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
+      gap: 1.25rem;
       width: 100%;
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       border: 1.5px solid var(--border-card);
       border-radius: var(--radius-xl);
-      padding: 0.75rem 1.4rem;
+      padding: 0.7rem 1.4rem;
       box-shadow: 0 2px 8px rgba(22, 29, 32, 0.03);
     }
 
-    .reassurance-left {
+    .nav-hint-left {
       display: flex;
       align-items: center;
       gap: 0.6rem;
-      color: var(--on-surface-variant);
+      color: var(--on-surface);
       font-family: var(--font-label);
-      font-size: 0.86rem;
-      font-weight: 500;
+      font-size: 0.88rem;
+      font-weight: 600;
     }
 
-    .reassurance-left .material-symbols-outlined {
-      color: #2f6954;
+    .nav-hint-left .material-symbols-outlined {
+      color: var(--primary);
       font-size: 20px;
     }
 
-    .reassurance-right {
+    .nav-hint-right {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.6rem;
       font-family: var(--font-label);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
+      color: var(--on-surface-variant);
     }
 
-    .helpline-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: #fff1f0;
-      color: #b3261e;
-      border: 1px solid #ffd8d6;
-      padding: 0.25rem 0.65rem;
-      border-radius: var(--radius-full);
-      font-weight: 700;
-      text-decoration: none;
+    .nav-hint-right strong {
+      color: var(--on-surface);
     }
 
-    .helpline-chip .material-symbols-outlined {
-      font-size: 15px;
-    }
-
-    /* ─── Compact / Responsive Tweaks ─── */
-    @media (max-height: 780px) and (min-width: 900px) {
+    /* ─── Compact Screen Optimization ─── */
+    @media (max-height: 750px) and (min-width: 900px) {
       .home-hub-container {
-        gap: 1rem;
+        gap: 0.85rem;
       }
       .home-hero-title {
-        font-size: 2rem;
+        font-size: 1.95rem;
       }
       .home-hero-subtitle {
-        font-size: 1rem;
+        font-size: 0.95rem;
       }
-      .home-action-card {
-        padding: 1.35rem 1.25rem;
-      }
-      .card-feature-list {
-        margin-bottom: 0.9rem;
-        gap: 0.25rem;
+      .home-info-card {
+        padding: 1.25rem 1.15rem;
       }
       .card-title {
-        font-size: 1.2rem;
+        font-size: 1.15rem;
       }
       .card-desc {
-        font-size: 0.88rem;
-        margin-bottom: 0.85rem;
+        font-size: 0.86rem;
+        margin-bottom: 0.75rem;
       }
-      .card-action-btn {
-        min-height: 42px;
-        font-size: 0.88rem;
+      .card-bullet-list {
+        padding-top: 0.55rem;
+        gap: 0.35rem;
       }
-      .home-reassurance-bar {
-        padding: 0.55rem 1.2rem;
+      .card-bullet-item {
+        font-size: 0.78rem;
+      }
+      .home-nav-hint-bar {
+        padding: 0.5rem 1.2rem;
       }
     }
 
     @media (max-width: 960px) {
-      .home-hub-grid {
+      .home-info-grid {
         grid-template-columns: 1fr;
-        max-width: 540px;
+        max-width: 580px;
         gap: 1.15rem;
       }
-      .home-reassurance-bar {
+      .home-nav-hint-bar {
         flex-direction: column;
         align-items: flex-start;
-        gap: 0.5rem;
+        gap: 0.4rem;
       }
     }
   </style>
@@ -499,7 +421,7 @@
       </div>
     </div>
 
-    <!-- ═══════════════════ MAIN CONTENT (NON-SCROLLABLE GATEWAY) ═══════════════════ -->
+    <!-- ═══════════════════ MAIN CONTENT (INFORMATION ONLY - NON-SCROLLABLE) ═══════════════════ -->
     <main class="home-main" id="mainContent" role="main">
       <div class="home-hub-container">
 
@@ -507,121 +429,111 @@
         <div class="home-hero-header">
           <div class="home-pill-badge">
             <span class="material-symbols-outlined" style="font-size:16px">verified_user</span>
-            <span>BVM Student Wellness Sanctuary • 100% Confidential</span>
+            <span>BVM Student Wellness Sanctuary • Information &amp; Guidelines</span>
           </div>
-          <h1 class="home-hero-title">Your Safe Space on Campus</h1>
+          <h1 class="home-hero-title">Welcome to Campus Sanctuary</h1>
           <p class="home-hero-subtitle">
-            Welcome to the confidential mental well-being kiosk for BVM students. Take a private check-in, explore calming exercises, or speak with campus counseling.
+            A quiet, confidential resource designed to support student mental wellness, reduce academic stress, and provide immediate care at Birla Vishvakarma Mahavidyalaya.
           </p>
         </div>
 
-        <!-- 3 Primary Action Cards -->
-        <div class="home-hub-grid">
+        <!-- 3 Informational Panels (No duplicate buttons) -->
+        <div class="home-info-grid">
 
-          <!-- Card 1: Check-In -->
-          <a href="checkin.html" class="home-action-card card-checkin" id="cardCheckIn">
+          <!-- Panel 1: Privacy & Anonymity -->
+          <div class="home-info-card card-privacy">
             <div class="card-top-row">
               <div class="card-icon-bubble">
-                <span class="material-symbols-outlined">favorite</span>
+                <span class="material-symbols-outlined">shield_lock</span>
               </div>
-              <span class="card-badge-pill">2 Min • Anonymous</span>
+              <span class="card-badge-pill">Zero Data Logged</span>
             </div>
-            <h2 class="card-title">Mood Check-In</h2>
-            <p class="card-desc">Check how you are doing today. Answer 8 confidential questions to receive an instant well-being pulse and tailored guidance.</p>
-            <div class="card-feature-list">
-              <div class="card-feature-item">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>Visual mood selector</span>
+            <h2 class="card-title">100% Confidential</h2>
+            <p class="card-desc">
+              Your privacy is strictly safeguarded. This kiosk never requests your name, roll number, or credentials. No conversation logs, assessments, or personal details are saved.
+            </p>
+            <div class="card-bullet-list">
+              <div class="card-bullet-item">
+                <span class="material-symbols-outlined bullet-icon">check_circle</span>
+                <span><strong>No Sign-In:</strong> Free and open to every student.</span>
               </div>
-              <div class="card-feature-item">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>Confidential well-being score</span>
+              <div class="card-bullet-item">
+                <span class="material-symbols-outlined bullet-icon">check_circle</span>
+                <span><strong>Auto-Reset:</strong> Clears automatically upon inactivity.</span>
               </div>
-              <div class="card-feature-item">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>Personalized coping roadmap</span>
+              <div class="card-bullet-item">
+                <span class="material-symbols-outlined bullet-icon">check_circle</span>
+                <span><strong>Quick Exit:</strong> Tap top button anytime to clear screen.</span>
               </div>
             </div>
-            <div class="card-action-btn">
-              <span>Start Check-In</span>
-              <span class="material-symbols-outlined btn-arrow">arrow_forward</span>
-            </div>
-          </a>
+          </div>
 
-          <!-- Card 2: Coping Tools -->
-          <a href="tools.html" class="home-action-card card-tools" id="cardTools">
+          <!-- Panel 2: Purpose & Design Thinking -->
+          <div class="home-info-card card-mission">
             <div class="card-top-row">
               <div class="card-icon-bubble">
-                <span class="material-symbols-outlined">spa</span>
+                <span class="material-symbols-outlined">self_improvement</span>
               </div>
-              <span class="card-badge-pill">Instant Relief</span>
+              <span class="card-badge-pill">Student Initiative</span>
             </div>
-            <h2 class="card-title">Coping Tools</h2>
-            <p class="card-desc">Take a mindful pause right now. Try interactive guided box breathing, sensory grounding, calming audio, and campus resources.</p>
-            <div class="card-feature-list">
-              <div class="card-feature-item">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>4-4-4-4 Box Breathing visualizer</span>
+            <h2 class="card-title">Purpose &amp; Support</h2>
+            <p class="card-desc">
+              Engineering deadlines, examinations, and hostel life can be taxing. Campus Sanctuary provides evidence-based self-care tools and human guidance right on campus.
+            </p>
+            <div class="card-bullet-list">
+              <div class="card-bullet-item">
+                <span class="material-symbols-outlined bullet-icon">check_circle</span>
+                <span><strong>Self-Reflection:</strong> Evaluate stress privately.</span>
               </div>
-              <div class="card-feature-item">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>5-4-3-2-1 Sensory Grounding</span>
+              <div class="card-bullet-item">
+                <span class="material-symbols-outlined bullet-icon">check_circle</span>
+                <span><strong>Grounding Exercises:</strong> Calm breath pacers &amp; senses.</span>
               </div>
-              <div class="card-feature-item">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>AI Wellness Companion &amp; Audio</span>
+              <div class="card-bullet-item">
+                <span class="material-symbols-outlined bullet-icon">check_circle</span>
+                <span><strong>Counselor Pathway:</strong> Direct appointment scheduling.</span>
               </div>
             </div>
-            <div class="card-action-btn">
-              <span>Explore Tools</span>
-              <span class="material-symbols-outlined btn-arrow">arrow_forward</span>
-            </div>
-          </a>
+          </div>
 
-          <!-- Card 3: Counselor -->
-          <a href="counseling.html" class="home-action-card card-counseling" id="cardCounseling">
+          <!-- Panel 3: Campus Guidance Cell & Helplines -->
+          <div class="home-info-card card-campus">
             <div class="card-top-row">
               <div class="card-icon-bubble">
                 <span class="material-symbols-outlined">support_agent</span>
               </div>
-              <span class="card-badge-pill">Human Support</span>
+              <span class="card-badge-pill">On-Campus Care</span>
             </div>
-            <h2 class="card-title">Talk to a Counselor</h2>
-            <p class="card-desc">Connect with trained BVM campus counselors. Book a private, judgement-free session or generate an anonymous priority pass.</p>
-            <div class="card-feature-list">
-              <div class="card-feature-item">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>Direct confidential appointment</span>
+            <h2 class="card-title">Guidance &amp; Helplines</h2>
+            <p class="card-desc">
+              Whenever you need a listening ear or professional assistance, campus counselors and national 24/7 helplines are readily available to assist you.
+            </p>
+            <div class="card-bullet-list">
+              <div class="card-bullet-item">
+                <span class="material-symbols-outlined bullet-icon">location_on</span>
+                <span><strong>BVM Counseling Room:</strong> Room B-201 (Mon–Fri 10–5)</span>
               </div>
-              <div class="card-feature-item">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>Print/Save Anonymous Pass</span>
+              <div class="card-bullet-item">
+                <span class="material-symbols-outlined bullet-icon">call</span>
+                <span><strong>Tele-MANAS (24/7):</strong> Toll-free <strong>14416</strong></span>
               </div>
-              <div class="card-feature-item">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>Room B-201 Student Guidance Cell</span>
+              <div class="card-bullet-item">
+                <span class="material-symbols-outlined bullet-icon">call</span>
+                <span><strong>KIRAN Helpline:</strong> Toll-free <strong>1800-599-0019</strong></span>
               </div>
             </div>
-            <div class="card-action-btn">
-              <span>Connect Now</span>
-              <span class="material-symbols-outlined btn-arrow">arrow_forward</span>
-            </div>
-          </a>
+          </div>
 
         </div>
 
-        <!-- Privacy & Reassurance Bar -->
-        <div class="home-reassurance-bar">
-          <div class="reassurance-left">
-            <span class="material-symbols-outlined">shield_lock</span>
-            <span><strong>100% Anonymous:</strong> No login, no roll number, and zero personal data stored on this kiosk.</span>
+        <!-- Informational Navigation Guidance Bar -->
+        <div class="home-nav-hint-bar">
+          <div class="nav-hint-left">
+            <span class="material-symbols-outlined">explore</span>
+            <span>Use the top navigation bar to access <strong>Check-In</strong>, <strong>Coping Tools</strong>, or <strong>Counselor</strong>.</span>
           </div>
-          <div class="reassurance-right">
-            <span>24/7 National Crisis:</span>
-            <a href="tel:14416" class="helpline-chip">
-              <span class="material-symbols-outlined">call</span>
-              <span>Tele-MANAS: 14416</span>
-            </a>
+          <div class="nav-hint-right">
+            <span>Need to leave quickly? Tap <strong>Quick Exit</strong> in the top-right corner anytime.</span>
           </div>
         </div>
 
